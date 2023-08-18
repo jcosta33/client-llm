@@ -146,21 +146,19 @@ const Tweaker = () => {
       <Box display="flex" justifyContent="space-between">
         <Button
           variant="text"
-          color="primary"
-          style={{ marginBottom: 8, marginTop: 8 }}
-          startIcon={<UpdateIcon />}
-          onClick={updateConfig}
-        >
-          Save
-        </Button>
-
-        <Button
-          variant="text"
-          color="warning"
+          sx={{ color: "#999" }}
           startIcon={<ResetIcon />}
           onClick={reset}
         >
           Reset
+        </Button>
+        <Button
+          variant="text"
+          sx={{ color: "#ccc" }}
+          startIcon={<UpdateIcon />}
+          onClick={updateConfig}
+        >
+          Save
         </Button>
       </Box>
     </Box>

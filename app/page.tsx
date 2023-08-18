@@ -1,5 +1,12 @@
 "use client";
-import { Grid, Container, Typography, Box } from "@mui/material";
+import {
+  Grid,
+  Container,
+  Box,
+  Typography,
+  CardContent,
+  Card,
+} from "@mui/material";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -8,6 +15,7 @@ import { Provider } from "./context";
 import Tweaker from "./components/tweaker";
 import Input from "./components/input";
 import Output from "./components/output";
+import ResponsiveAppBar from "./components/appbar";
 
 const darkTheme = createTheme({
   palette: {
@@ -31,26 +39,31 @@ export default function Home() {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <Provider>
-        <Container maxWidth={false}>
-          <Grid container marginTop={2} spacing={0}>
-            <Grid item sm={2}>
-              <Box maxHeight="94vh" overflow="auto" padding={2}>
-                <Tweaker />
-              </Box>
-            </Grid>
-            <Grid item sm={5}>
-              <Box maxHeight="94vh" overflow="auto" padding={2}>
-                <Input />
-              </Box>
-            </Grid>
-
-            <Grid item sm={5}>
-              <Box maxHeight="94vh" overflow="auto" padding={2}>
-                <Output />
-              </Box>
-            </Grid>
+        <ResponsiveAppBar />
+        <Grid container marginTop={4} spacing={0}>
+          <Grid item sm={2}>
+            <Box maxHeight="94vh" overflow="auto" padding={2}>
+              <Tweaker />
+            </Box>
           </Grid>
-        </Container>
+          <Grid item sm={5}>
+            <Box maxHeight="94vh" overflow="auto" padding={2}>
+              <Typography variant="h6" sx={{ color: "#777" }}>
+                Input
+              </Typography>
+              <Input />
+            </Box>
+          </Grid>
+
+          <Grid item sm={5}>
+            <Box maxHeight="94vh" overflow="auto" padding={2}>
+              <Typography variant="h6" sx={{ color: "#777" }}>
+                Output
+              </Typography>
+              <Output />
+            </Box>
+          </Grid>
+        </Grid>
       </Provider>
     </ThemeProvider>
   );

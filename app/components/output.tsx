@@ -32,6 +32,12 @@ const Output = () => {
 
   return (
     <Grid container spacing={2} direction="column">
+      
+      <Grid item>
+        <Alert severity="info">
+          <Typography>{label}</Typography>
+        </Alert>
+      </Grid>
       {messages.map((message, index) => (
         <Grid item key={index} maxWidth="100%!important">
           <Card variant="outlined" sx={{ fontSize: 12 }}>
@@ -75,11 +81,6 @@ const Output = () => {
         </Grid>
       ))}
 
-      <Grid item>
-        <Alert severity="info">
-          <Typography>{label}</Typography>
-        </Alert>
-      </Grid>
       {messages.length === 0 && (
         <Grid item>
           <Box
