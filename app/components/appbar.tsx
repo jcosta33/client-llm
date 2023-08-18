@@ -42,11 +42,14 @@ function ResponsiveAppBar() {
   return (
     <AppBar
       position="static"
-      sx={{ background: "#0b0b0b", boxShadow: "none", padding: 2 }}
+      sx={{
+        background: "#000",
+        boxShadow: "none",
+        borderBottom: "1px solid #222",
+      }}
     >
       <Toolbar>
         <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-
         <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
           <IconButton
             size="large"

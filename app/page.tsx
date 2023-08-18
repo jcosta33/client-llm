@@ -20,6 +20,11 @@ import ResponsiveAppBar from "./components/appbar";
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
+    background: {
+      default: "#000", // Dark background for dark mode
+      paper: "#000", // Dark background for dark mode
+    },
+
     text: {
       primary: "#ffffff", // White text for dark mode
       secondary: "#bbbbbb", // Slightly dimmed text for secondary text in dark mode
