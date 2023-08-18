@@ -32,7 +32,6 @@ const Output = () => {
 
   return (
     <Grid container spacing={2} direction="column">
-      
       <Grid item>
         <Alert severity="info">
           <Typography>{label}</Typography>

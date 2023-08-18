@@ -1,7 +1,5 @@
 import {
   Box,
-  Card,
-  CardContent,
   FormControl,
   InputLabel,
   MenuItem,
@@ -12,7 +10,6 @@ import { useContext } from "../hooks";
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import Presets from "./presets";
-import Contexts from "./contexts";
 import { githubDark } from "@uiw/codemirror-theme-github";
 import Commands from "./commands";
 import { codeString } from "../exampleCode";

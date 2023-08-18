@@ -1,7 +1,6 @@
 import { ButtonGroup, Button } from "@mui/material";
 import { useContext } from "../hooks";
 import CodeIcon from "@mui/icons-material/Code";
-import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
 import BugReportIcon from "@mui/icons-material/BugReport";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import HelpIcon from "@mui/icons-material/Help";
@@ -14,7 +13,7 @@ const Presets = () => {
     <ButtonGroup size="small" >
       <Button
         startIcon={<CodeIcon />}
-        color="primary"
+        color="secondary"
         onClick={() =>
           setPrompt(
             "Please refactor this TypeScript code using SOLID principles."
@@ -26,7 +25,7 @@ const Presets = () => {
 
       <Button
         startIcon={<BugReportIcon />}
-        color="primary"
+        color="secondary"
         onClick={() =>
           setPrompt(
             "I have this error when running my  code. Any idea what could be causing it?"
@@ -37,7 +36,7 @@ const Presets = () => {
       </Button>
       <Button
         startIcon={<LibraryBooksIcon />}
-        color="primary"
+        color="secondary"
         onClick={() =>
           setPrompt("Can you generate documentation for this function? ")
         }
@@ -46,14 +45,14 @@ const Presets = () => {
       </Button>
       <Button
         startIcon={<HelpIcon />}
-        color="primary"
+        color="secondary"
         onClick={() => setPrompt("Can you explain this code?")}
       >
         Explain
       </Button>
       <Button
         startIcon={<CheckBoxIcon />}
-        color="primary"
+        color="secondary"
         onClick={() => setPrompt("Can you write a test for this code?")}
       >
         Write test
