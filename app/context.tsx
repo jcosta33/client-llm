@@ -64,7 +64,7 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState("typescript");
 
   const [selectedModel, setSelectedModel] = useState(
-    "Llama-2-13b-chat-hf-q4f32_1"
+    "RedPajama-INCITE-Chat-3B-v1-q4f32_0"
   );
 
   const updateConfig = useCallback(() => {
@@ -84,11 +84,11 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const reset = useCallback(async () => {
     setMessages([]);
-    setSelectedModel("Llama-2-13b-chat-hf-q4f32_1");
+    setSelectedModel("RedPajama-INCITE-Chat-3B-v1-q4f32_0");
     chat.resetChat();
     setLabel(await chat.runtimeStatsText());
 
-    reload("Llama-2-13b-chat-hf-q4f32_1", chatOpts);
+    reload("RedPajama-INCITE-Chat-3B-v1-q4f32_0", chatOpts);
   }, []);
 
   const stop = useCallback(() => chat.interruptGenerate(), []);
@@ -141,13 +141,13 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
   );
 
   if (!chatInit) {
+    setChatInit(true);
+
     chat.setInitProgressCallback((report: InitProgressReport) => {
       if (report.progress === 1 && !chatLoaded) setChatLoaded(true);
       setLabel(report.text);
     });
     reload(selectedModel, chatOpts);
-
-    setChatInit(true);
   }
 
   const value = {

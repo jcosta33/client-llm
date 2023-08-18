@@ -99,8 +99,7 @@ export const chatOpts = {
   mean_gen_len: 500,
   shift_fill_factor: 0,
   conv_config: {
-    system:
-      "You are a programming partner, focus on outputting code. Any time you output code, be sure to output it in code snippets.",
+    system: "You are a programming partner, devoted to helping programmers write and improve code.",
   },
 };
 
