@@ -79,12 +79,13 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
         system,
       },
     };
+    chat.resetChat();
+    chat.unload();
     reload(selectedModel, config);
   }, []);
 
   const reset = useCallback(async () => {
     setMessages([]);
-    setSelectedModel("RedPajama-INCITE-Chat-3B-v1-q4f32_0");
     chat.resetChat();
     setTopP(chatOpts.top_p);
     setRepetitionPenalty(chatOpts.repetition_penalty);
@@ -106,10 +107,7 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
       // This callback allows us to report initialization progress
       try {
         await chat.reload(model, chatOpts, appConfig);
-
-        await chat.generate("Hello!", (_step, message) => {
-          setMessages([message]);
-        });
+        setChatLoaded(true);
         setLabel(await chat.runtimeStatsText());
       } catch (err: unknown) {
         setLabel("Init error, " + (err?.toString() ?? ""));
@@ -152,7 +150,6 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
     setChatInit(true);
 
     chat.setInitProgressCallback((report: InitProgressReport) => {
-      if (report.progress === 1 && !chatLoaded) setChatLoaded(true);
       setLabel(report.text);
     });
     reload(selectedModel, chatOpts);

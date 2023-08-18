@@ -1,4 +1,5 @@
 import { AppConfig, ChatOptions, ChatModule } from "@mlc-ai/web-llm";
+import { ThemeOptions } from "@mui/material";
 
 export const appConfig: AppConfig = {
   model_list: [
@@ -99,8 +100,66 @@ export const chatOpts = {
   mean_gen_len: 500,
   shift_fill_factor: 0,
   conv_config: {
-    system: "You are a programming partner, devoted to helping programmers write and improve code.",
+    system:
+      "You are a programming partner, devoted to helping programmers write and improve code.",
   },
 };
 
 export const chat = new ChatModule();
+
+export const muiTheme: ThemeOptions = {
+  palette: {
+    mode: "dark",
+    background: {
+      default: "#000",
+    },
+    primary: {
+      light: "#D9C2FF", // Lighter pastel purple
+      main: "#C0A2FF", // Pastel purple
+      dark: "#A889FF", // Darker pastel purple
+      contrastText: "#000",
+    },
+    secondary: {
+      light: "#FFFFD1", // Lighter pastel yellow
+      main: "#FFFFB3", // Pastel yellow
+      dark: "#FFFF94", // Darker pastel yellow
+      contrastText: "#000",
+    },
+    error: {
+      light: "#FFD0B0",
+      main: "#FFC3A0", // Pastel orange
+      dark: "#FFB090",
+      contrastText: "#000",
+    },
+    warning: {
+      light: "#FFEBD0",
+      main: "#FFDCB9", // Pastel peach
+      dark: "#FFCCA1",
+      contrastText: "#000",
+    },
+    info: {
+      light: "#C5F2FF",
+      main: "#B3EFFF", // Pastel blue
+      dark: "#A1ECFF",
+      contrastText: "#000",
+    },
+    success: {
+      light: "#E6FFDB",
+      main: "#DFFFCD", // Pastel green
+      dark: "#D0FFBD",
+      contrastText: "#000",
+    },
+    grey: {
+      50: "#F3F3F3",
+      100: "#E0E0E0",
+      200: "#C7C7C7",
+      300: "#B0B0B0",
+      400: "#999999",
+      500: "#808080",
+      600: "#666666",
+      700: "#4D4D4D",
+      800: "#333333",
+      900: "#1A1A1A",
+    },
+  },
+};

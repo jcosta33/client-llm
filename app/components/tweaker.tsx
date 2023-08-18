@@ -32,42 +32,17 @@ const Tweaker = () => {
     shift_fill_factor,
     system,
     setSystem,
-    selectedModel,
     repetition_penalty,
   } = useContext();
 
   return (
     <Box>
-      <FormControl fullWidth variant="outlined">
-        <InputLabel id="llm-model-label">LLM Model</InputLabel>
-        <Select
-          labelId="llm-model-label"
-          value={selectedModel}
-          onChange={(e) => setSelectedModel(e.target.value)}
-          label="LLM Model"
-        >
-          {appConfig.model_list.map((model, index) => (
-            <MenuItem key={index} value={model.local_id}>
-              {model.local_id}
-            </MenuItem>
-          ))}
-        </Select>
-
-        <FormHelperText sx={{ fontSize: 10 }}>
-          Choose based on capability of your GPU.
-        </FormHelperText>
-      </FormControl>
-
-      <br />
-      <br />
-
       <TextField
         multiline
         rows={2}
         value={system}
         onChange={(e) => setSystem(e.target.value)}
         fullWidth
-        margin="normal"
         label="System context"
         helperText="Contextual information to guide the model's behavior."
       />

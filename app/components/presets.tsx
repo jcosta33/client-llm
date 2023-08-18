@@ -10,19 +10,7 @@ const Presets = () => {
   const { setPrompt } = useContext();
 
   return (
-    <ButtonGroup size="small" >
-      <Button
-        startIcon={<CodeIcon />}
-        color="secondary"
-        onClick={() =>
-          setPrompt(
-            "Please refactor this TypeScript code using SOLID principles."
-          )
-        }
-      >
-        Refactor
-      </Button>
-
+    <ButtonGroup size="small">
       <Button
         startIcon={<BugReportIcon />}
         color="secondary"
@@ -38,7 +26,7 @@ const Presets = () => {
         startIcon={<LibraryBooksIcon />}
         color="secondary"
         onClick={() =>
-          setPrompt("Can you generate documentation for this function? ")
+          setPrompt("Can you generate documentation for this code? ")
         }
       >
         Document

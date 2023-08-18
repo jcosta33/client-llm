@@ -21,6 +21,15 @@ pre {
   font-size: 12px;
 }
 
+a {
+  color: #fff;
+  text-decoration: none;
+}
+
+a.active {
+  text-decoration: underline;
+}
+
 ol,
 ul {
   padding: 16px 22px;

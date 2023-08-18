@@ -28,16 +28,8 @@ const Prompt = () => {
   } = useContext();
   return (
     <Box>
-      <CodeMirror
-        extensions={[javascript({ jsx: true })]}
-        onChange={(value) => setSource(value)}
-        theme={githubDark}
-        placeholder={codeString}
-        maxHeight="60vh"
-        style={{ margin: "16px 0", fontSize: "12px" }}
-      />
-      <Box display="flex" gap={2}>
-        <FormControl variant="outlined" sx={{ margin: "16px 0", width: 200 }}>
+      <Box display="flex" gap={2} marginBottom={2}>
+        <FormControl variant="outlined" sx={{ width: 200 }}>
           <InputLabel id="language-label">Language</InputLabel>
           <Select
             labelId="language-label"
@@ -65,14 +57,20 @@ const Prompt = () => {
               sendMessage();
             }
           }}
-          style={{ margin: "16px 0" }}
           inputProps={{
             maxLength: 1000, // limiting message length to 1000 characters, can adjust as needed
           }}
         />
       </Box>
+      <CodeMirror
+        extensions={[javascript({ jsx: true })]}
+        onChange={(value) => setSource(value)}
+        theme={githubDark}
+        placeholder={codeString}
+        maxHeight="60vh"
+        style={{ margin: "0 0 16px 0", fontSize: "12px" }}
+      />
       <Presets />
-
       <TextField
         fullWidth
         variant="outlined"

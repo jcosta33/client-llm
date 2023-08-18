@@ -14,7 +14,7 @@ import SyntaxHighlighter from "react-syntax-highlighter";
 import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 const Output = () => {
-  const { messages, label, language } = useContext();
+  const { messages, label, language, selectedModel, chatLoaded } = useContext();
 
   const handleCopy = (content: string) => {
     navigator.clipboard.writeText(content);
@@ -37,6 +37,18 @@ const Output = () => {
           <Typography>{label}</Typography>
         </Alert>
       </Grid>
+
+      <Grid item>
+        <Typography
+          variant="h4"
+          color={"#333"}
+          textAlign={"center"}
+          marginTop={10}
+        >
+          {selectedModel}
+        </Typography>
+      </Grid>
+
       {messages.map((message, index) => (
         <Grid item key={index} maxWidth="100%!important">
           <Card variant="outlined" sx={{ fontSize: 12 }}>
@@ -80,7 +92,7 @@ const Output = () => {
         </Grid>
       ))}
 
-      {messages.length === 0 && (
+      {!chatLoaded && (
         <Grid item>
           <Box
             sx={{
