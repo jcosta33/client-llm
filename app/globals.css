@@ -8,6 +8,7 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  font-size: 14px;
 }
 
 body {
@@ -38,7 +39,7 @@ code {
   background: #212121;
   border: 1px solid #444;
   margin: 0 4px;
-  font-size: 12px;
+  font-size: 10px;
   &:only-child {
     margin: 0;
   }
@@ -50,4 +51,25 @@ pre code {
 
 .MuiFormHelperText-root {
   margin-left: 0;
+}
+
+/* scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+/* scrollbar track */
+::-webkit-scrollbar-track {
+  box-shadow: none;
+  border-radius: 0px;
+}
+
+/* scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background: #222;
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

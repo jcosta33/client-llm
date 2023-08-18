@@ -64,7 +64,7 @@ const Prompt = () => {
           maxLength: 1000, // limiting message length to 1000 characters, can adjust as needed
         }}
       />
-      <Contexts />
+      {/* <Contexts /> */}
 
       <CodeMirror
         extensions={[javascript({ jsx: true })]}
@@ -72,7 +72,7 @@ const Prompt = () => {
         theme={githubDark}
         placeholder={codeString}
         maxHeight="60vh"
-        style={{ margin: " 16px 0", fontSize: "12px" }}
+        style={{ margin: "0 0 16px 0", fontSize: "12px" }}
       />
 
       <Presets />
@@ -86,7 +86,7 @@ const Prompt = () => {
         onChange={(e) => setPrompt(e.target.value)}
         label="Prompt"
         placeholder="Press ENTER to send prompt"
-        style={{ margin: "32px 0 " }}
+        style={{ margin: "16px 0 " }}
         onKeyPress={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();

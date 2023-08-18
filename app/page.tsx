@@ -1,5 +1,5 @@
 "use client";
-import { Grid, Container, Typography } from "@mui/material";
+import { Grid, Container, Typography, Box } from "@mui/material";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -32,16 +32,22 @@ export default function Home() {
       <CssBaseline />
       <Provider>
         <Container maxWidth={false}>
-          <Grid container marginTop={1} spacing={4}>
+          <Grid container marginTop={2} spacing={0}>
             <Grid item sm={2}>
-              <Tweaker />
+              <Box maxHeight="94vh" overflow="auto" padding={2}>
+                <Tweaker />
+              </Box>
             </Grid>
             <Grid item sm={5}>
-              <Input />
+              <Box maxHeight="94vh" overflow="auto" padding={2}>
+                <Input />
+              </Box>
             </Grid>
 
             <Grid item sm={5}>
-              <Output />
+              <Box maxHeight="94vh" overflow="auto" padding={2}>
+                <Output />
+              </Box>
             </Grid>
           </Grid>
         </Container>

@@ -9,14 +9,12 @@ import {
   Button,
   Box,
   Slider,
-  Typography,
   FormHelperText,
 } from "@mui/material";
 import { appConfig } from "../consts";
 import { useContext } from "../hooks";
 import UpdateIcon from "@mui/icons-material/SaveOutlined";
 import ResetIcon from "@mui/icons-material/RestartAlt";
-import HelpIcon from "@mui/icons-material/Help";
 
 const Tweaker = () => {
   const {
@@ -65,7 +63,7 @@ const Tweaker = () => {
 
       <TextField
         multiline
-        rows={4}
+        rows={2}
         value={system}
         onChange={(e) => setSystem(e.target.value)}
         fullWidth

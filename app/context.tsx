@@ -86,6 +86,13 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
     setMessages([]);
     setSelectedModel("RedPajama-INCITE-Chat-3B-v1-q4f32_0");
     chat.resetChat();
+    setTopP(chatOpts.top_p);
+    setRepetitionPenalty(chatOpts.repetition_penalty);
+    setTemperature(chatOpts.temperature);
+    setMeanGenLen(chatOpts.mean_gen_len);
+    setShiftFillFactor(chatOpts.shift_fill_factor);
+    setSystem(chatOpts.conv_config.system);
+
     setLabel(await chat.runtimeStatsText());
 
     reload("RedPajama-INCITE-Chat-3B-v1-q4f32_0", chatOpts);
@@ -116,9 +123,10 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const sendMessage = useCallback(async () => {
     const localMessages = messages;
     const message = `
-      Request: ${prompt}
-      Context:  ${context}
+      Language: ${language}
+      Tools, frameworks and libraries:  ${context}
       Source: ${source}
+      Request: ${prompt}
     `;
     await chat.generate(message, (_step, message) => {
       setMessages([...[message], ...localMessages]);

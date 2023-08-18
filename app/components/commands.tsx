@@ -4,9 +4,10 @@ import StopIcon from "@mui/icons-material/Stop"; // For "Stop Generation"
 import ReplayIcon from "@mui/icons-material/Replay"; // For "Redo"
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline"; // For "Are you sure?"
 import SendIcon from "@mui/icons-material/Send"; // For "Are you sure?"
+import ClearIcon from "@mui/icons-material/Clear"; // For "Are you sure?"
 
 const Commands = () => {
-  const { messages, sendCommand, stop, sendMessage } = useContext();
+  const { messages, sendCommand, setPrompt, stop, sendMessage } = useContext();
 
   return (
     <Box display="flex" justifyContent="space-between">
@@ -19,6 +20,7 @@ const Commands = () => {
         >
           Send
         </Button>
+
         <Button
           disabled={messages.length === 0}
           startIcon={<StopIcon />}
@@ -26,6 +28,14 @@ const Commands = () => {
           onClick={() => stop()}
         >
           Stop
+        </Button>
+        <Button
+          disabled={messages.length === 0}
+          startIcon={<ClearIcon />}
+          color="primary"
+          onClick={() => setPrompt("")}
+        >
+          Clear
         </Button>
       </Box>
       {messages.length > 1 && (

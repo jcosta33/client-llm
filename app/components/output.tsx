@@ -33,8 +33,8 @@ const Output = () => {
   return (
     <Grid container spacing={2} direction="column">
       {messages.map((message, index) => (
-        <Grid item key={index}>
-          <Card variant="outlined">
+        <Grid item key={index} maxWidth="100%!important">
+          <Card variant="outlined" sx={{ fontSize: 12 }}>
             <CardContent>
               <ReactMarkdown
                 components={{
