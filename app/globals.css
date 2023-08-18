@@ -20,12 +20,13 @@ pre {
   font-size: 12px;
 }
 
-ol, ul {
+ol,
+ul {
   padding: 16px 22px;
 }
 
-li{
-  margin:2px 0;
+li {
+  margin: 2px 0;
 }
 
 p {
@@ -43,7 +44,10 @@ code {
   }
 }
 
-
 pre code {
-  display:block;
+  display: block;
+}
+
+.MuiFormHelperText-root {
+  margin-left: 0;
 }
