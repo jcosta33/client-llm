@@ -7,7 +7,15 @@ import SendIcon from "@mui/icons-material/Send"; // For "Are you sure?"
 import ClearIcon from "@mui/icons-material/Clear"; // For "Are you sure?"
 
 const Commands = () => {
-  const { messages, sendCommand, setPrompt, stop, sendMessage } = useContext();
+  const {
+    messages,
+    chatLoaded,
+    sendCommand,
+    setPrompt,
+    stop,
+    prompt,
+    sendMessage,
+  } = useContext();
 
   return (
     <Box display="flex" justifyContent="space-between">
@@ -16,13 +24,13 @@ const Commands = () => {
           startIcon={<SendIcon />}
           color="success"
           onClick={sendMessage}
-          disabled={messages.length === 0}
+          disabled={!chatLoaded}
         >
           Send
         </Button>
 
         <Button
-          disabled={messages.length === 0}
+          disabled={!chatLoaded}
           startIcon={<StopIcon />}
           color="warning"
           onClick={() => stop()}
@@ -30,7 +38,7 @@ const Commands = () => {
           Stop
         </Button>
         <Button
-          disabled={messages.length === 0}
+          disabled={prompt === ""}
           startIcon={<ClearIcon />}
           color="primary"
           onClick={() => setPrompt("")}
@@ -38,7 +46,7 @@ const Commands = () => {
           Clear
         </Button>
       </Box>
-      {messages.length > 1 && (
+      {messages.length > 0 && (
         <Box>
           <Button
             startIcon={<ReplayIcon />}

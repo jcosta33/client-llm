@@ -1,30 +1,25 @@
+"use-client";
 import {
-  Card,
-  CardContent,
-  FormControl,
   InputLabel,
-  Select,
-  MenuItem,
   TextField,
   Button,
   Box,
   Slider,
   FormHelperText,
 } from "@mui/material";
-import { appConfig } from "../consts";
 import { useContext } from "../hooks";
-import UpdateIcon from "@mui/icons-material/SaveOutlined";
+import UpdateIcon from "@mui/icons-material/Check";
 import ResetIcon from "@mui/icons-material/RestartAlt";
 
 const Tweaker = () => {
   const {
-    setSelectedModel,
     setRepetitionPenalty,
     setTopP,
     setTemperature,
     setMeanGenLen,
     setShiftFillFactor,
     updateConfig,
+    chatLoaded,
     top_p,
     temperature,
     mean_gen_len,
@@ -49,7 +44,7 @@ const Tweaker = () => {
       <br />
       <br />
 
-      <InputLabel>Repetition Deterrence</InputLabel>
+      <InputLabel>Repetition deterrence</InputLabel>
       <Slider
         size="small"
         value={repetition_penalty}
@@ -63,7 +58,7 @@ const Tweaker = () => {
         increases repetitions.
       </FormHelperText>
       <br />
-      <InputLabel>Output Diversity</InputLabel>
+      <InputLabel>Output diversity</InputLabel>
       <Slider
         size="small"
         value={top_p}
@@ -73,11 +68,11 @@ const Tweaker = () => {
         step={0.01}
       />
       <FormHelperText sx={{ mt: -1, fontSize: 10 }}>
-        Controls output diversity. Closer to 1 for deterministic outputs.
+        Controls output diversity. Closer to 0 for deterministic outputs.
       </FormHelperText>
       <br />
 
-      <InputLabel>Randomness Level</InputLabel>
+      <InputLabel>Randomness level</InputLabel>
       <Slider
         size="small"
         value={temperature}
@@ -92,7 +87,7 @@ const Tweaker = () => {
       </FormHelperText>
       <br />
 
-      <InputLabel>Average Output Length</InputLabel>
+      <InputLabel>Average output length</InputLabel>
       <Slider
         size="small"
         value={mean_gen_len}
@@ -105,7 +100,7 @@ const Tweaker = () => {
         Desired average length of the generated output.
       </FormHelperText>
       <br />
-      <InputLabel>Topic Shift Inertia</InputLabel>
+      <InputLabel>Shift fill factor</InputLabel>
       <Slider
         size="small"
         value={shift_fill_factor}
@@ -123,6 +118,7 @@ const Tweaker = () => {
           variant="text"
           sx={{ color: "#999" }}
           startIcon={<ResetIcon />}
+          disabled={!chatLoaded}
           onClick={reset}
         >
           Reset
@@ -131,9 +127,10 @@ const Tweaker = () => {
           variant="text"
           sx={{ color: "#ccc" }}
           startIcon={<UpdateIcon />}
+          disabled={!chatLoaded}
           onClick={updateConfig}
         >
-          Save
+          Apply
         </Button>
       </Box>
     </Box>

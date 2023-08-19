@@ -1,4 +1,4 @@
-import { AppConfig, ChatOptions, ChatModule } from "@mlc-ai/web-llm";
+import { AppConfig } from "@mlc-ai/web-llm";
 import { ThemeOptions } from "@mui/material";
 
 export const appConfig: AppConfig = {
@@ -97,15 +97,13 @@ export const chatOpts = {
   repetition_penalty: 1.2,
   top_p: 0.8,
   temperature: 0.5,
-  mean_gen_len: 500,
-  shift_fill_factor: 0,
+  mean_gen_len: 1000,
+  shift_fill_factor: 0.3,
   conv_config: {
     system:
       "You are a programming partner, devoted to helping programmers write and improve code.",
   },
 };
-
-export const chat = new ChatModule();
 
 export const muiTheme: ThemeOptions = {
   palette: {
@@ -114,39 +112,40 @@ export const muiTheme: ThemeOptions = {
       default: "#000",
     },
     primary: {
-      light: "#D9C2FF", // Lighter pastel purple
-      main: "#C0A2FF", // Pastel purple
-      dark: "#A889FF", // Darker pastel purple
+      light: "#E5E5FF", // Lighter super washed-out pastel blue/purple
+      main: "#D3D3FF", // Super washed-out pastel blue/purple
+      dark: "#C0C0FF", // Darker super washed-out pastel blue/purple
       contrastText: "#000",
     },
     secondary: {
-      light: "#FFFFD1", // Lighter pastel yellow
-      main: "#FFFFB3", // Pastel yellow
-      dark: "#FFFF94", // Darker pastel yellow
+  
+      light: "#FFFBE5", // Light super super washed-out yellow
+      main: "#FFF9D3",  // Super super washed-out yellow
+      dark: "#FFF7C0",  // Darker super super washed-out yellow
       contrastText: "#000",
     },
     error: {
-      light: "#FFD0B0",
-      main: "#FFC3A0", // Pastel orange
-      dark: "#FFB090",
+      light: "#FFE5E5",
+      main: "#FFD0D0", // Super washed-out pastel red
+      dark: "#FFBBBB",
       contrastText: "#000",
     },
     warning: {
-      light: "#FFEBD0",
-      main: "#FFDCB9", // Pastel peach
-      dark: "#FFCCA1",
+      light: "#FFF0E5",
+      main: "#FFE0D0", // Super washed-out pastel orange
+      dark: "#FFD0BA",
       contrastText: "#000",
     },
     info: {
-      light: "#C5F2FF",
-      main: "#B3EFFF", // Pastel blue
-      dark: "#A1ECFF",
+      light: "#E5EFFF",
+      main: "#D0DEFF", // Super washed-out pastel blue
+      dark: "#B0CFFF",
       contrastText: "#000",
     },
     success: {
-      light: "#E6FFDB",
-      main: "#DFFFCD", // Pastel green
-      dark: "#D0FFBD",
+      light: "#E5FFE5",
+      main: "#D0FFD0", // Super washed-out pastel green
+      dark: "#B0FFB0",
       contrastText: "#000",
     },
     grey: {

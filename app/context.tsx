@@ -1,6 +1,12 @@
-import { ChatOptions, InitProgressReport } from "@mlc-ai/web-llm";
-import React, { useState, useCallback, createContext, ReactNode } from "react";
-import { chatOpts, chat, appConfig } from "./consts";
+import { ChatModule, ChatOptions, InitProgressReport } from "@mlc-ai/web-llm";
+import React, {
+  useState,
+  useCallback,
+  createContext,
+  ReactNode,
+  useMemo,
+} from "react";
+import { chatOpts, appConfig } from "./consts";
 
 interface ContextType {
   label: string;
@@ -39,6 +45,7 @@ interface ContextType {
   sendMessage: () => Promise<void>;
   sendCommand: (command: string) => Promise<void>;
 }
+const chat = new ChatModule();
 
 const Context = createContext<ContextType | undefined>(undefined);
 
@@ -64,7 +71,7 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState("typescript");
 
   const [selectedModel, setSelectedModel] = useState(
-    "RedPajama-INCITE-Chat-3B-v1-q4f32_0"
+    "Llama-2-7b-chat-hf-q4f32_1"
   );
 
   const updateConfig = useCallback(() => {
@@ -79,8 +86,6 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
         system,
       },
     };
-    chat.resetChat();
-    chat.unload();
     reload(selectedModel, config);
   }, []);
 
@@ -93,10 +98,7 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
     setMeanGenLen(chatOpts.mean_gen_len);
     setShiftFillFactor(chatOpts.shift_fill_factor);
     setSystem(chatOpts.conv_config.system);
-
-    setLabel(await chat.runtimeStatsText());
-
-    reload("RedPajama-INCITE-Chat-3B-v1-q4f32_0", chatOpts);
+    reload("Llama-2-7b-chat-hf-q4f32_1", chatOpts);
   }, []);
 
   const stop = useCallback(() => chat.interruptGenerate(), []);
@@ -106,9 +108,10 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
       setChatLoaded(false);
       // This callback allows us to report initialization progress
       try {
+        await chat.unload();
+        await chat.resetChat();
         await chat.reload(model, chatOpts, appConfig);
         setChatLoaded(true);
-        setLabel(await chat.runtimeStatsText());
       } catch (err: unknown) {
         setLabel("Init error, " + (err?.toString() ?? ""));
         console.log(err);
@@ -120,12 +123,23 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const sendMessage = useCallback(async () => {
     const localMessages = messages;
-    const message = `
-      Language: ${language}
-      Tools, frameworks and libraries:  ${context}
-      Source: ${source}
-      Request: ${prompt}
-    `;
+    let message = "";
+
+    if (language !== "") {
+      message += `\nProgramming language: ${language};\n`;
+    }
+
+    if (context !== "") {
+      message += ` \nTools: ${context};\n`;
+    }
+
+    if (prompt !== "") {
+      message += ` \n Request: ${prompt}; \n`;
+    }
+    if (source !== "") {
+      message += `\n Code: ${source}\n `;
+    }
+
     await chat.generate(message, (_step, message) => {
       setMessages([...[message], ...localMessages]);
     });
@@ -152,7 +166,7 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
     chat.setInitProgressCallback((report: InitProgressReport) => {
       setLabel(report.text);
     });
-    reload(selectedModel, chatOpts);
+    reload(selectedModel, {});
   }
 
   const value = {

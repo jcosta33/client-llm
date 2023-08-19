@@ -38,12 +38,12 @@ const Output = () => {
         </Alert>
       </Grid>
 
-      <Grid item>
+      <Grid item position={"absolute"} zIndex={-1}>
         <Typography
           variant="h4"
-          color={"#333"}
+          color={"#252525"}
           textAlign={"center"}
-          marginTop={10}
+          marginTop={20}
         >
           {selectedModel}
         </Typography>
@@ -91,22 +91,6 @@ const Output = () => {
           </Card>
         </Grid>
       ))}
-
-      {!chatLoaded && (
-        <Grid item>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "100%",
-              pt: 10, // Adds space on top
-            }}
-          >
-            <CircularProgress />
-          </Box>
-        </Grid>
-      )}
     </Grid>
   );
 };

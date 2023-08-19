@@ -10,6 +10,7 @@ import Input from "./components/input";
 import Output from "./components/output";
 import ResponsiveAppBar from "./components/appbar";
 import { muiTheme } from "./consts";
+import Loader from "./components/loader";
 
 const darkTheme = createTheme(muiTheme);
 
@@ -18,6 +19,7 @@ export default function Home() {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <Provider>
+        <Loader />
         <ResponsiveAppBar />
         <Grid container marginTop={1} spacing={0}>
           <Grid item sm={2}>

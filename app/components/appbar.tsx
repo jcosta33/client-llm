@@ -95,7 +95,7 @@ function ResponsiveAppBar() {
                   setSelectedModel(e.target.value);
                   setTimeout(() => {
                     updateConfig();
-                  }, 0);
+                  }, 100);
                 }}
                 label="LLM Model"
                 sx={{ marginRight: 2 }}
@@ -115,6 +115,7 @@ function ResponsiveAppBar() {
                 label="Preset"
                 value="pp"
                 variant="outlined"
+                disabled={!chatLoaded}
               >
                 <MenuItem value="pp">Pair programming</MenuItem>
                 <MenuItem value="c">Creative</MenuItem>

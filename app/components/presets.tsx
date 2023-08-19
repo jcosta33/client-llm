@@ -1,6 +1,6 @@
 import { ButtonGroup, Button } from "@mui/material";
 import { useContext } from "../hooks";
-import CodeIcon from "@mui/icons-material/Code";
+import CommentIcon from "@mui/icons-material/Comment";
 import BugReportIcon from "@mui/icons-material/BugReport";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import HelpIcon from "@mui/icons-material/Help";
@@ -44,6 +44,13 @@ const Presets = () => {
         onClick={() => setPrompt("Can you write a test for this code?")}
       >
         Write test
+      </Button>
+      <Button
+        startIcon={<CommentIcon />}
+        color="secondary"
+        onClick={() => setPrompt("Can you write a test for this code?")}
+      >
+        Comments
       </Button>
     </ButtonGroup>
   );
