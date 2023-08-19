@@ -37,7 +37,6 @@ const Tweaker = () => {
         <Select
           labelId="runtime-label"
           value={runtime}
-          disabled={chatLoading}
           onChange={(e) => {
             setRuntime(e.target.value);
             if (e.target.value === "open-ai") {
@@ -60,7 +59,6 @@ const Tweaker = () => {
         <Select
           labelId="llm-model-label"
           value={selectedModel}
-          disabled={chatLoading}
           onChange={(e) => {
             setSelectedModel(e.target.value);
             setOptionsUpdated(true);

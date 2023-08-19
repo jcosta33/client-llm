@@ -6,8 +6,8 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
-import Person from "@mui/icons-material/SettingsOutlined";
+import AdbIcon from "@mui/icons-material/Psychology";
+import Person from "@mui/icons-material/Person";
 import { useState } from "react";
 import {
   FormControl,
@@ -43,7 +43,7 @@ function ResponsiveAppBar() {
       }}
     >
       <Toolbar>
-        <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 3 }} />
+        <AdbIcon sx={{ fontSize:30, mr: 3 }} />
 
         <Box gap={1} display={"flex"} sx={{ flexGrow: 1 }}>
           <FormControl variant="outlined" size="small">

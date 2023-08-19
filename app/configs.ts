@@ -75,7 +75,6 @@ export const chatOpts = {
   mean_gen_len: 1000,
   shift_fill_factor: 0.3,
   conv_config: {
-    roles: ["user", "assistant", "system"],
     system:
       "A chat where the assistant understands and responds with expertise in software development. The user is seeking guidance in programming, and the assistant should provide clear, concise, and relevant answers.",
   },
