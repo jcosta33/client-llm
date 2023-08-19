@@ -117,7 +117,7 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
       setLabel("Init error, " + (err?.toString() ?? ""));
       setChatLoading(false);
     }
-  }, [chat, options, system, selectedModel]);
+  }, [optionsUpdated]);
 
   const sendMessage = useCallback(async () => {
     const localMessages = messages;

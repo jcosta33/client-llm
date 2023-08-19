@@ -26,7 +26,7 @@ const Output = () => {
       {messages.map((message, index) => {
         return (
           <Grid item key={index} maxWidth="100%!important">
-            <Card variant="outlined" sx={{ fontSize: 12, background: "#000" }}>
+            <Card variant="outlined" sx={{ fontSize: 12, background: "#111" }}>
               <CardContent>
                 <ReactMarkdown
                   components={{

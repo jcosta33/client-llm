@@ -1,19 +1,6 @@
-import {
-  Alert,
-  Box,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Alert, Box, TextField, Typography } from "@mui/material";
 import { useContext } from "../hooks";
-import CodeMirror from "@uiw/react-codemirror";
-import { javascript } from "@codemirror/lang-javascript";
 import Presets from "./presets";
-import { githubDark } from "@uiw/codemirror-theme-github";
 import Commands from "./commands";
 
 const Prompt = () => {
@@ -36,12 +23,9 @@ const Prompt = () => {
         }}
       />
       <Commands />
-
-      {label !== "" && (
-        <Alert severity="info" sx={{ mt: 2 }}>
-          <Typography>{label}</Typography>
-        </Alert>
-      )}
+      <Alert severity="info" sx={{ mt: 1 }}>
+        <Typography>{label || "Ready"}</Typography>
+      </Alert>
     </Box>
   );
 };

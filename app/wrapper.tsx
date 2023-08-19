@@ -63,13 +63,12 @@ export default function Wrapper() {
         <Grid container spacing={0} justifyContent={"center"}>
           <Grid item sm={8}>
             <Box
-              height="calc(100vh - 350px)"
+              height="calc(100vh - 390px)"
               overflow="auto"
               marginBottom={2}
               marginTop={2}
             >
               <Output />
-
             </Box>
             <Prompt />
           </Grid>
