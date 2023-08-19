@@ -100,7 +100,6 @@ export const chatOpts = {
   mean_gen_len: 1000,
   shift_fill_factor: 0.3,
   conv_config: {
-    roles: ["USER", "ASSISTANT"],
     system:
       "A chat between a user who is a programmer and an artificial intelligence assistant. The assistant gives helpful suggestions to the programmer.",
   },
