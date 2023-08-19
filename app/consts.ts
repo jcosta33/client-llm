@@ -100,8 +100,9 @@ export const chatOpts = {
   mean_gen_len: 1000,
   shift_fill_factor: 0.3,
   conv_config: {
+    roles: ["USER", "ASSISTANT"],
     system:
-      "You are a programming partner, devoted to helping programmers write and improve code.",
+      "A chat between a user who is a programmer and an artificial intelligence assistant. The assistant gives helpful suggestions to the programmer.",
   },
 };
 
@@ -118,10 +119,9 @@ export const muiTheme: ThemeOptions = {
       contrastText: "#000",
     },
     secondary: {
-  
       light: "#FFFBE5", // Light super super washed-out yellow
-      main: "#FFF9D3",  // Super super washed-out yellow
-      dark: "#FFF7C0",  // Darker super super washed-out yellow
+      main: "#FFF9D3", // Super super washed-out yellow
+      dark: "#FFF7C0", // Darker super super washed-out yellow
       contrastText: "#000",
     },
     error: {

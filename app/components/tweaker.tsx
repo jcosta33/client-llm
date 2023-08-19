@@ -6,10 +6,14 @@ import {
   Box,
   Slider,
   FormHelperText,
+  FormControl,
+  MenuItem,
+  Select,
 } from "@mui/material";
 import { useContext } from "../hooks";
 import UpdateIcon from "@mui/icons-material/Check";
 import ResetIcon from "@mui/icons-material/RestartAlt";
+import { appConfig } from "../consts";
 
 const Tweaker = () => {
   const {
@@ -19,6 +23,8 @@ const Tweaker = () => {
     setMeanGenLen,
     setShiftFillFactor,
     updateConfig,
+    selectedModel,
+    setSelectedModel,
     chatLoaded,
     top_p,
     temperature,
@@ -32,6 +38,26 @@ const Tweaker = () => {
 
   return (
     <Box>
+      <FormControl variant="outlined" sx={{ maxWidth: "100%" }}>
+        <InputLabel id="llm-model-label">LLM Model</InputLabel>
+        <Select
+          labelId="llm-model-label"
+          value={selectedModel}
+          disabled={!chatLoaded}
+          onChange={(e) => {
+            setSelectedModel(e.target.value);
+          }}
+          label="LLM Model"
+        >
+          {appConfig.model_list.map((model, index) => (
+            <MenuItem key={index} value={model.local_id}>
+              {model.local_id}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      <br />
+      <br />
       <TextField
         multiline
         rows={2}

@@ -4,29 +4,24 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
-import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import Person from "@mui/icons-material/SettingsOutlined";
 import { useState } from "react";
-import { usePathname } from "next/navigation";
 import {
   FormControl,
   FormControlLabel,
-  FormHelperText,
   InputLabel,
   Select,
   Switch,
 } from "@mui/material";
-import { appConfig } from "../consts";
 import { useContext } from "../hooks";
 
 const settings = ["Settings", "Presets", "Contexts"];
 
 function ResponsiveAppBar() {
-  const { chatLoaded, selectedModel, setSelectedModel, updateConfig } =
-    useContext();
+  const { chatLoaded } = useContext();
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -85,28 +80,6 @@ function ResponsiveAppBar() {
               </Select>
             </FormControl>
 
-            <FormControl variant="outlined" size="small">
-              <InputLabel id="llm-model-label">LLM Model</InputLabel>
-              <Select
-                labelId="llm-model-label"
-                value={selectedModel}
-                disabled={!chatLoaded}
-                onChange={(e) => {
-                  setSelectedModel(e.target.value);
-                  setTimeout(() => {
-                    updateConfig();
-                  }, 100);
-                }}
-                label="LLM Model"
-                sx={{ marginRight: 2 }}
-              >
-                {appConfig.model_list.map((model, index) => (
-                  <MenuItem key={index} value={model.local_id}>
-                    {model.local_id}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
             <FormControl variant="outlined" size="small">
               <InputLabel id="language-label">Preset</InputLabel>
 
