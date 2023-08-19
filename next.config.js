@@ -12,6 +12,9 @@ const nextConfig = {
         module: false,
         perf_hooks: false,
         caches: false,
+        tls: false,
+        module: false,
+        enconding: false,
       };
     }
 

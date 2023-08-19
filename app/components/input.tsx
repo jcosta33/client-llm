@@ -1,10 +1,13 @@
 import {
+  Alert,
   Box,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
   TextField,
+  Typography,
 } from "@mui/material";
 import { useContext } from "../hooks";
 import CodeMirror from "@uiw/react-codemirror";
@@ -14,8 +17,9 @@ import { githubDark } from "@uiw/codemirror-theme-github";
 import Commands from "./commands";
 import { codeString } from "../exampleCode";
 import { programmingLanguages } from "../consts";
+import Prompt from "./prompt";
 
-const Prompt = () => {
+const Input = () => {
   const {
     setPrompt,
     sendMessage,
@@ -24,6 +28,7 @@ const Prompt = () => {
     setContext,
     setSource,
     language,
+    label,
     setLanguage,
   } = useContext();
   return (
@@ -70,30 +75,9 @@ const Prompt = () => {
         maxHeight="60vh"
         style={{ margin: "0 0 16px 0", fontSize: "12px" }}
       />
-      <Presets />
-      <TextField
-        fullWidth
-        variant="outlined"
-        value={prompt}
-        multiline
-        rows={2} // specify the number of rows
-        onChange={(e) => setPrompt(e.target.value)}
-        label="Prompt"
-        placeholder="Press ENTER to send prompt"
-        style={{ margin: "16px 0 " }}
-        onKeyPress={(e) => {
-          if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            sendMessage();
-          }
-        }}
-        inputProps={{
-          maxLength: 5000, // limiting message length to 1000 characters, can adjust as needed
-        }}
-      />
-      <Commands />
+      <Prompt />
     </Box>
   );
 };
 
-export default Prompt;
+export default Input;

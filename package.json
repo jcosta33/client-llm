@@ -26,12 +26,18 @@
     "codemirror": "^6.0.1",
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.16",
+    "highlight.js": "^11.8.0",
     "mui-markdown": "^1.1.8",
     "next": "13.4.16",
+    "openai": "^4.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-highlight": "^0.15.0",
     "react-markdown": "^8.0.7",
     "react-syntax-highlighter": "^15.5.0",
     "typescript": "5.1.6"
+  },
+  "devDependencies": {
+    "@types/react-highlight": "^0.12.5"
   }
 }

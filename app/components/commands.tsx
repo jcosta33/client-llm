@@ -9,7 +9,7 @@ import ClearIcon from "@mui/icons-material/Clear"; // For "Are you sure?"
 const Commands = () => {
   const {
     messages,
-    chatLoaded,
+    chatLoading,
     sendCommand,
     setPrompt,
     stop,
@@ -24,13 +24,13 @@ const Commands = () => {
           startIcon={<SendIcon />}
           color="success"
           onClick={sendMessage}
-          disabled={!chatLoaded}
+          disabled={chatLoading}
         >
           Send
         </Button>
 
         <Button
-          disabled={!chatLoaded}
+          disabled={chatLoading}
           startIcon={<StopIcon />}
           color="warning"
           onClick={() => stop()}

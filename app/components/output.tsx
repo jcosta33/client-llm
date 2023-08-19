@@ -1,3 +1,5 @@
+"use-client";
+
 import {
   Alert,
   Box,
@@ -10,87 +12,78 @@ import {
 } from "@mui/material";
 import { useContext } from "../hooks";
 import ReactMarkdown from "react-markdown";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import Highlight from "react-highlight";
+import "highlight.js/styles/github-dark.css";
+import CopyIcon from "@mui/icons-material/CopyAll";
 
 const Output = () => {
-  const { messages, label, language, selectedModel, chatLoaded } = useContext();
+  const { messages, selectedModel } = useContext();
 
   const handleCopy = (content: string) => {
     navigator.clipboard.writeText(content);
   };
 
-  const handleDownload = (content: BlobPart) => {
-    const blob = new Blob([content], { type: "text/plain" });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "code.txt";
-    a.click();
-    window.URL.revokeObjectURL(url);
-  };
-
   return (
     <Grid container spacing={2} direction="column">
-      <Grid item>
-        <Alert severity="info">
-          <Typography>{label}</Typography>
-        </Alert>
-      </Grid>
+      {messages.map((message, index) => {
+        return (
+          <Grid item key={index} maxWidth="100%!important">
+            <Card variant="outlined" sx={{ fontSize: 12, background: "#000" }}>
+              <CardContent>
+                <ReactMarkdown
+                  components={{
+                    code({ node, inline, className, children, ...props }) {
+                      // If inline, retain the default behavior
+                      if (inline) {
+                        return (
+                          <code className={className} {...props}>
+                            {children}
+                          </code>
+                        );
+                      }
 
-      <Grid item position={"absolute"} zIndex={-1}>
+                      return (
+                        <Box position="relative">
+                          <Highlight>
+                            <div contentEditable>{children}</div>
+                          </Highlight>
+                          <Button
+                            onClick={() => handleCopy(String(children))}
+                            variant="text"
+                            size="small"
+                            sx={{
+                              position: "absolute",
+                              top: 5,
+                              right: 5,
+                              minWidth: 0,
+                              color: "#999",
+                            }}
+                          >
+                            <CopyIcon />
+                          </Button>
+                        </Box>
+                      );
+                    },
+                  }}
+                >
+                  {message}
+                </ReactMarkdown>
+              </CardContent>
+            </Card>
+          </Grid>
+        );
+      })}
+      <Grid item>
         <Typography
           variant="h4"
-          color={"#252525"}
+          color={"#444"}
           textAlign={"center"}
-          marginTop={20}
+          marginBottom={4}
+          marginTop={messages.length === 0 ? 20 : 2}
         >
           {selectedModel}
         </Typography>
       </Grid>
-
-      {messages.map((message, index) => (
-        <Grid item key={index} maxWidth="100%!important">
-          <Card variant="outlined" sx={{ fontSize: 12 }}>
-            <CardContent>
-              <ReactMarkdown
-                components={{
-                  code({ node, inline, className, children, ...props }) {
-                    // If inline, retain the default behavior
-                    if (inline) {
-                      return (
-                        <code className={className} {...props}>
-                          {children}
-                        </code>
-                      );
-                    }
-                    const content = String(children).replace(/\n$/, "");
-
-                    return (
-                      <>
-                        <SyntaxHighlighter
-                          language={language}
-                          style={{ ...a11yDark }}
-                        >
-                          {content}
-                        </SyntaxHighlighter>
-                        <Button onClick={() => handleCopy(content)}>
-                          Copy
-                        </Button>
-                        <Button onClick={() => handleDownload(content)}>
-                          Download
-                        </Button>
-                      </>
-                    );
-                  },
-                }}
-              >
-                {message}
-              </ReactMarkdown>
-            </CardContent>
-          </Card>
-        </Grid>
-      ))}
     </Grid>
   );
 };

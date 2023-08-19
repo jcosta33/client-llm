@@ -21,7 +21,7 @@ import { useContext } from "../hooks";
 const settings = ["Settings", "Presets", "Contexts"];
 
 function ResponsiveAppBar() {
-  const { chatLoaded } = useContext();
+  const { setFullscreen, setLayout, layout } = useContext();
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -43,65 +43,35 @@ function ResponsiveAppBar() {
       }}
     >
       <Toolbar>
-        <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+        <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 3 }} />
 
-        <Typography
-          variant="h5"
-          noWrap
-          component="a"
-          href="/"
-          sx={{
-            mr: 2,
-            display: { xs: "flex", md: "none" },
-            flexGrow: 1,
-            fontFamily: "monospace",
-            fontWeight: 700,
-            letterSpacing: ".3rem",
-            color: "inherit",
-            textDecoration: "none",
-          }}
-        >
-          LOGO
-        </Typography>
-        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-          <MenuItem>
-            <FormControl variant="outlined" size="small">
-              <InputLabel id="language-label">Layout</InputLabel>
+        <Box gap={1} display={"flex"} sx={{ flexGrow: 1 }}>
+          <FormControl variant="outlined" size="small">
+            <InputLabel id="language-label">Layout</InputLabel>
 
-              <Select
-                labelId="layout-label"
-                label="Layout"
-                value="code"
-                variant="outlined"
-                sx={{ marginRight: 2 }}
-              >
-                <MenuItem value="chat">Chat</MenuItem>
-                <MenuItem value="code">Code</MenuItem>
-              </Select>
-            </FormControl>
+            <Select
+              labelId="layout-label"
+              label="Layout"
+              onChange={(e) => setLayout(e.target.value)}
+              value={layout}
+              variant="outlined"
+            >
+              <MenuItem value="chat">Chat</MenuItem>
+              <MenuItem value="code">Code</MenuItem>
+            </Select>
+          </FormControl>
 
-            <FormControl variant="outlined" size="small">
-              <InputLabel id="language-label">Preset</InputLabel>
-
-              <Select
-                labelId="preset-label"
-                label="Preset"
-                value="pp"
-                variant="outlined"
-                disabled={!chatLoaded}
-              >
-                <MenuItem value="pp">Pair programming</MenuItem>
-                <MenuItem value="c">Creative</MenuItem>
-                <MenuItem value="i">Interesting</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControlLabel
-              value="start"
-              control={<Switch color="secondary" defaultChecked />}
-              label="Logs"
-              labelPlacement="start"
-            />
-          </MenuItem>
+          <FormControlLabel
+            value="start"
+            control={
+              <Switch
+                color="secondary"
+                onChange={(e) => setFullscreen(e.target.checked)}
+              />
+            }
+            label="Full screen"
+            labelPlacement="start"
+          />
         </Box>
 
         <Box sx={{ flexGrow: 0 }}>

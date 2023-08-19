@@ -13,47 +13,67 @@ import {
 import { useContext } from "../hooks";
 import UpdateIcon from "@mui/icons-material/Check";
 import ResetIcon from "@mui/icons-material/RestartAlt";
-import { appConfig } from "../consts";
+import { openAIModels, webLLMModels } from "../consts";
 
 const Tweaker = () => {
   const {
-    setRepetitionPenalty,
-    setTopP,
-    setTemperature,
-    setMeanGenLen,
-    setShiftFillFactor,
-    updateConfig,
     selectedModel,
     setSelectedModel,
-    chatLoaded,
-    top_p,
-    temperature,
-    mean_gen_len,
+    chatLoading,
+    options,
+    setSingleOption,
+    runtime,
+    setRuntime,
     reset,
-    shift_fill_factor,
+    setOptionsUpdated,
     system,
     setSystem,
-    repetition_penalty,
   } = useContext();
 
   return (
     <Box>
-      <FormControl variant="outlined" sx={{ maxWidth: "100%" }}>
-        <InputLabel id="llm-model-label">LLM Model</InputLabel>
+      <FormControl variant="outlined" sx={{ width: "100%" }}>
+        <InputLabel id="runtime-label"> Runtime</InputLabel>
+        <Select
+          labelId="runtime-label"
+          value={runtime}
+          disabled={chatLoading}
+          onChange={(e) => {
+            setRuntime(e.target.value);
+            if (e.target.value === "open-ai") {
+              setSelectedModel("gpt-3.5-turbo-16k");
+            } else {
+              setSelectedModel("RedPajama-INCITE-Chat-3B-v1-q4f32_0");
+            }
+            setOptionsUpdated(true);
+          }}
+          label="Runtime"
+        >
+          <MenuItem value="web-llm">WebLLM</MenuItem>
+          <MenuItem value="open-ai">OpenAI</MenuItem>
+        </Select>
+      </FormControl>
+      <br />
+      <br />
+      <FormControl variant="outlined" sx={{ width: "100%" }}>
+        <InputLabel id="llm-model-label"> Model</InputLabel>
         <Select
           labelId="llm-model-label"
           value={selectedModel}
-          disabled={!chatLoaded}
+          disabled={chatLoading}
           onChange={(e) => {
             setSelectedModel(e.target.value);
+            setOptionsUpdated(true);
           }}
-          label="LLM Model"
+          label="Model"
         >
-          {appConfig.model_list.map((model, index) => (
-            <MenuItem key={index} value={model.local_id}>
-              {model.local_id}
-            </MenuItem>
-          ))}
+          {(runtime === "open-ai" ? openAIModels : webLLMModels).map(
+            (model, index) => (
+              <MenuItem key={index} value={model.name}>
+                {model.label}
+              </MenuItem>
+            )
+          )}
         </Select>
       </FormControl>
       <br />
@@ -62,7 +82,10 @@ const Tweaker = () => {
         multiline
         rows={2}
         value={system}
-        onChange={(e) => setSystem(e.target.value)}
+        onChange={(e) => {
+          setSystem(e.target.value);
+          setOptionsUpdated(true);
+        }}
         fullWidth
         label="System context"
         helperText="Contextual information to guide the model's behavior."
@@ -73,8 +96,11 @@ const Tweaker = () => {
       <InputLabel>Repetition deterrence</InputLabel>
       <Slider
         size="small"
-        value={repetition_penalty}
-        onChange={(e, newValue) => setRepetitionPenalty(newValue as number)}
+        value={options.repetition_penalty}
+        onChange={(e, newValue) => {
+          setSingleOption("repetition_penalty", newValue as number);
+          setOptionsUpdated(true);
+        }}
         min={0.5}
         max={2.0}
         step={0.01}
@@ -87,8 +113,11 @@ const Tweaker = () => {
       <InputLabel>Output diversity</InputLabel>
       <Slider
         size="small"
-        value={top_p}
-        onChange={(e, newValue) => setTopP(newValue as number)}
+        value={options.top_p}
+        onChange={(e, newValue) => {
+          setSingleOption("top_p", newValue as number);
+          setOptionsUpdated(true);
+        }}
         min={0}
         max={1}
         step={0.01}
@@ -101,8 +130,11 @@ const Tweaker = () => {
       <InputLabel>Randomness level</InputLabel>
       <Slider
         size="small"
-        value={temperature}
-        onChange={(e, newValue) => setTemperature(newValue as number)}
+        value={options.temperature}
+        onChange={(e, newValue) => {
+          setSingleOption("temperature", newValue as number);
+          setOptionsUpdated(true);
+        }}
         min={0}
         max={2}
         step={0.01}
@@ -112,51 +144,55 @@ const Tweaker = () => {
         randomness.
       </FormHelperText>
       <br />
-
-      <InputLabel>Average output length</InputLabel>
-      <Slider
-        size="small"
-        value={mean_gen_len}
-        onChange={(e, newValue) => setMeanGenLen(newValue as number)}
-        min={100}
-        max={1500}
-        step={1}
-      />
-      <FormHelperText sx={{ mt: -1, fontSize: 10 }}>
-        Desired average length of the generated output.
-      </FormHelperText>
+      {runtime === "web-llm" && (
+        <>
+          <InputLabel>Average output length</InputLabel>
+          <Slider
+            size="small"
+            value={options.mean_gen_len}
+            onChange={(e, newValue) => {
+              setSingleOption("mean_gen_len", newValue as number);
+              setOptionsUpdated(true);
+            }}
+            min={100}
+            max={1500}
+            step={1}
+          />
+          <FormHelperText sx={{ mt: -1, fontSize: 10 }}>
+            Desired average length of the generated output.
+          </FormHelperText>
+        </>
+      )}
       <br />
-      <InputLabel>Shift fill factor</InputLabel>
-      <Slider
-        size="small"
-        value={shift_fill_factor}
-        onChange={(e, newValue) => setShiftFillFactor(newValue as number)}
-        min={0}
-        max={2}
-        step={0.02}
-      />
-      <FormHelperText sx={{ mt: -1, fontSize: 10 }}>
-        Determines the model's tendency to stick to or shift topics.
-      </FormHelperText>
+      {runtime === "web-llm" && (
+        <>
+          <InputLabel>Shift fill factor</InputLabel>
+          <Slider
+            size="small"
+            value={options.shift_fill_factor}
+            onChange={(e, newValue) => {
+              setSingleOption("shift_fill_factor", newValue as number);
+              setOptionsUpdated(true);
+            }}
+            min={0}
+            max={2}
+            step={0.02}
+          />
+          <FormHelperText sx={{ mt: -1, fontSize: 10 }}>
+            Determines the model's tendency to stick to or shift topics.
+          </FormHelperText>
+        </>
+      )}
       <br />
       <Box display="flex" justifyContent="space-between">
         <Button
           variant="text"
           sx={{ color: "#999" }}
           startIcon={<ResetIcon />}
-          disabled={!chatLoaded}
+          disabled={chatLoading}
           onClick={reset}
         >
           Reset
-        </Button>
-        <Button
-          variant="text"
-          sx={{ color: "#ccc" }}
-          startIcon={<UpdateIcon />}
-          disabled={!chatLoaded}
-          onClick={updateConfig}
-        >
-          Apply
         </Button>
       </Box>
     </Box>

@@ -2,9 +2,9 @@ import { LinearProgress } from "@mui/material";
 import { useContext } from "../hooks";
 
 const Loader = () => {
-  const { chatLoaded } = useContext();
+  const { chatLoading } = useContext();
 
-  return <LinearProgress style={{ display: chatLoaded ? "none" : "block" }} />;
+  return <LinearProgress style={{ display: !chatLoading ? "none" : "block" }} />;
 };
 
 export default Loader;
