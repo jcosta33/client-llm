@@ -21,7 +21,6 @@
     "@uiw/codemirror-theme-abcdef": "^4.21.9",
     "@uiw/codemirror-theme-github": "^4.21.9",
     "@uiw/react-codemirror": "^4.21.9",
-    "@zeit/next-workers": "^1.0.0",
     "codemirror": "^6.0.1",
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.19",
@@ -33,8 +32,7 @@
     "react-dom": "18.2.0",
     "react-highlight": "^0.15.0",
     "react-markdown": "^8.0.7",
-    "typescript": "5.1.6",
-    "worker-loader": "^3.0.8"
+    "typescript": "5.1.6"
   },
   "devDependencies": {
     "@types/react-highlight": "^0.12.5"

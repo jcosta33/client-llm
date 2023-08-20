@@ -4,18 +4,6 @@ const nextConfig = {
 
   webpack: (config, { isServer }) => {
     // Fixes npm packages that depend on `fs` module
-    config.module.rules.push({
-      test: /\.worker\.js$/,
-      loader: 'worker-loader',
-      options: {
-        name: 'static/[hash].worker.js',
-        publicPath: '/_next/'
-      }
-    })
-
-    // Overcome Webpack referencing `window` in chunks
-    config.output.globalObject = `(typeof self !== 'undefined' ? self : this)`
-    
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback, // if you miss it, all the other options in fallback, specified

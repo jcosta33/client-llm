@@ -15,10 +15,6 @@ import { OpenAI } from "openai";
 import { formatPrompt } from "./utils";
 import { ContextType, PromptResponse } from "./types";
 
-const chat = new ChatWorkerClient(
-  new Worker(new URL("./worker.ts", import.meta.url), { type: "module" })
-);
-
 const openai = new OpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPEN_AI_API_KEY,
   dangerouslyAllowBrowser: true,
@@ -47,6 +43,14 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [chatLoading, setChatLoading] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const [layout, setLayout] = useState("chat");
+
+  const chat = useMemo(
+    () =>
+      new ChatWorkerClient(
+        new Worker(new URL("./worker.ts", import.meta.url), { type: "module" })
+      ),
+    []
+  );
 
   // Calculate prompt value based on language, context, message, and code
   const prompt = useMemo(
@@ -165,7 +169,7 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
    */
   const sendMessage = useCallback(async () => {
     setChatLoading(true);
-    debugger
+    debugger;
     if (source === "open-ai") {
       await handleOpenAiMessage();
     } else {
