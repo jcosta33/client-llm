@@ -11,19 +11,18 @@ import {
   Select,
 } from "@mui/material";
 import { useContext } from "../hooks";
-import UpdateIcon from "@mui/icons-material/Check";
 import ResetIcon from "@mui/icons-material/RestartAlt";
-import { openAIModels, webLLMModels } from "../consts";
+import { openAIModels, webLLMModels } from "../constants";
 
 const Tweaker = () => {
   const {
-    selectedModel,
-    setSelectedModel,
+    model,
+    setModel,
     chatLoading,
     options,
     setSingleOption,
-    runtime,
-    setRuntime,
+    source,
+    setSource,
     reset,
     setOptionsUpdated,
     system,
@@ -36,13 +35,13 @@ const Tweaker = () => {
         <InputLabel id="runtime-label"> Runtime</InputLabel>
         <Select
           labelId="runtime-label"
-          value={runtime}
+          value={source}
           onChange={(e) => {
-            setRuntime(e.target.value);
+            setSource(e.target.value);
             if (e.target.value === "open-ai") {
-              setSelectedModel("gpt-3.5-turbo-16k");
+              setModel("gpt-3.5-turbo-16k");
             } else {
-              setSelectedModel("RedPajama-INCITE-Chat-3B-v1-q4f32_0");
+              setModel("RedPajama-INCITE-Chat-3B-v1-q4f32_0");
             }
             setOptionsUpdated(true);
           }}
@@ -58,14 +57,14 @@ const Tweaker = () => {
         <InputLabel id="llm-model-label"> Model</InputLabel>
         <Select
           labelId="llm-model-label"
-          value={selectedModel}
+          value={model}
           onChange={(e) => {
-            setSelectedModel(e.target.value);
+            setModel(e.target.value);
             setOptionsUpdated(true);
           }}
           label="Model"
         >
-          {(runtime === "open-ai" ? openAIModels : webLLMModels).map(
+          {(source === "open-ai" ? openAIModels : webLLMModels).map(
             (model, index) => (
               <MenuItem key={index} value={model.name}>
                 {model.label}
@@ -90,7 +89,6 @@ const Tweaker = () => {
       />
       <br />
       <br />
-
       <InputLabel>Repetition deterrence</InputLabel>
       <Slider
         size="small"
@@ -142,7 +140,7 @@ const Tweaker = () => {
         randomness.
       </FormHelperText>
       <br />
-      {runtime === "web-llm" && (
+      {source === "web-llm" && (
         <>
           <InputLabel>Average output length</InputLabel>
           <Slider
@@ -162,7 +160,7 @@ const Tweaker = () => {
         </>
       )}
       <br />
-      {runtime === "web-llm" && (
+      {/* {source === "web-llm" && (
         <>
           <InputLabel>Shift fill factor</InputLabel>
           <Slider
@@ -180,7 +178,7 @@ const Tweaker = () => {
             Determines the model's tendency to stick to or shift topics.
           </FormHelperText>
         </>
-      )}
+      )} */}
       <br />
       <Box display="flex" justifyContent="space-between">
         <Button

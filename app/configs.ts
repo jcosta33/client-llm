@@ -72,10 +72,9 @@ export const chatOpts = {
   repetition_penalty: 1.2,
   top_p: 0.8,
   temperature: 0.5,
-  mean_gen_len: 1000,
-  shift_fill_factor: 0.3,
+  mean_gen_len: 500,
+//   shift_fill_factor: 0.3,
   conv_config: {
-    system:
-      "A chat where the assistant understands and responds with expertise in software development. The user is seeking guidance in programming, and the assistant should provide clear, concise, and relevant answers.",
+    system: "",
   },
 };

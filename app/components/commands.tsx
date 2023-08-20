@@ -1,4 +1,4 @@
-import { ButtonGroup, Button, Box } from "@mui/material";
+import { Button, Box } from "@mui/material";
 import { useContext } from "../hooks";
 import StopIcon from "@mui/icons-material/Stop"; // For "Stop Generation"
 import ReplayIcon from "@mui/icons-material/Replay"; // For "Redo"
@@ -11,9 +11,9 @@ const Commands = () => {
     messages,
     chatLoading,
     sendCommand,
-    setPrompt,
+    setMessage,
+    message,
     stop,
-    prompt,
     sendMessage,
   } = useContext();
 
@@ -38,10 +38,10 @@ const Commands = () => {
           Stop
         </Button>
         <Button
-          disabled={prompt === ""}
+          disabled={message === ""}
           startIcon={<ClearIcon />}
           color="primary"
-          onClick={() => setPrompt("")}
+          onClick={() => setMessage("")}
         >
           Clear
         </Button>

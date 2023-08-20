@@ -4,19 +4,19 @@ import Presets from "./presets";
 import Commands from "./commands";
 
 const Prompt = () => {
-  const { setPrompt, prompt, label, setLanguage } = useContext();
+  const { setMessage, message, log } = useContext();
   return (
     <Box>
       <Presets />
       <TextField
         fullWidth
         variant="outlined"
-        value={prompt}
+        value={message}
         multiline
         rows={2} // specify the number of rows
-        onChange={(e) => setPrompt(e.target.value)}
+        onChange={(e) => setMessage(e.target.value)}
         label="Prompt"
-        placeholder="Press ENTER to send prompt"
+        placeholder="Tell me a joke"
         style={{ margin: "16px 0 " }}
         inputProps={{
           maxLength: 5000, // limiting message length to 1000 characters, can adjust as needed
@@ -24,7 +24,7 @@ const Prompt = () => {
       />
       <Commands />
       <Alert severity="info" sx={{ mt: 1 }}>
-        <Typography>{label || "Ready"}</Typography>
+        <Typography variant="body1">{log || "Ready!"}</Typography>
       </Alert>
     </Box>
   );

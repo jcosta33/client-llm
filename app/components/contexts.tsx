@@ -2,7 +2,6 @@ import { ButtonGroup, Button } from "@mui/material";
 import { useContext } from "../hooks";
 import FunctionsIcon from "@mui/icons-material/Functions"; // Functional programming
 import SpeedIcon from "@mui/icons-material/Speed"; // High-performance
-import LockIcon from "@mui/icons-material/Lock"; // Internal/Private
 import ChildCareIcon from "@mui/icons-material/ChildCare"; // Beginners
 
 const Contexts = () => {

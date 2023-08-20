@@ -8,6 +8,8 @@ import React, {
 } from "react";
 import { chatOpts, appConfig } from "./configs";
 import { OpenAI } from "openai";
+import { formatPrompt } from "./utils";
+import { ContextType, PromptResponse } from "./types";
 
 const chat = new ChatModule();
 
@@ -16,66 +18,37 @@ const openai = new OpenAI({
   dangerouslyAllowBrowser: true,
 });
 
-interface ContextType {
-  setOptionsUpdated: React.Dispatch<React.SetStateAction<boolean>>;
-  label: string;
-  setLabel: React.Dispatch<React.SetStateAction<string>>;
-  messages: string[];
-  setMessages: React.Dispatch<React.SetStateAction<string[]>>;
-  prompt: string;
-  setPrompt: React.Dispatch<React.SetStateAction<string>>;
-  context: string;
-  setContext: React.Dispatch<React.SetStateAction<string>>;
-  source: string;
-  setSource: React.Dispatch<React.SetStateAction<string>>;
-  chatLoading: boolean;
-  setChatLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedModel: string;
-  setSelectedModel: React.Dispatch<React.SetStateAction<string>>;
-  setSystem: React.Dispatch<React.SetStateAction<string>>;
-  system: string;
-  setLanguage: React.Dispatch<React.SetStateAction<string>>;
-  language: string;
-  setRuntime: React.Dispatch<React.SetStateAction<string>>;
-  runtime: string;
-  options: ChatOptions;
-  setSingleOption: (key: keyof ChatOptions, value: string | number) => void;
-  layout: string;
-  setLayout: React.Dispatch<React.SetStateAction<string>>;
-  fullscreen: boolean;
-  setFullscreen: React.Dispatch<React.SetStateAction<boolean>>;
-  reset: () => void;
-  stop: () => void;
-  sendMessage: () => Promise<void>;
-  sendCommand: (command: string) => Promise<void>;
-}
-
 const Context = createContext<ContextType | undefined>(undefined);
 
+/**
+ * Provider Component to manage and share chat states.
+ * @param {ReactNode} children - Children components wrapped by this Provider.
+ * @returns {JSX.Element} Provider component.
+ */
 const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [label, setLabel] = useState("");
-  const [messages, setMessages] = useState([] as string[]);
-
-  const [runtime, setRuntime] = useState("open-ai");
-  const [prompt, setPrompt] = useState("");
-  const [source, setSource] = useState("");
-  const [context, setContext] = useState("");
-
+  // State definitions
   const [system, setSystem] = useState(chatOpts.conv_config.system);
-
-  const [language, setLanguage] = useState("typescript");
-
-  const [selectedModel, setSelectedModel] = useState("gpt-3.5-turbo-16k");
-
+  const [log, setLog] = useState("");
+  const [messages, setMessages] = useState<PromptResponse[]>([]);
+  const [source, setSource] = useState("open-ai");
+  const [message, setMessage] = useState("");
+  const [code, setCode] = useState("");
+  const [context, setContext] = useState("");
+  const [language, setLanguage] = useState("");
+  const [model, setModel] = useState("gpt-3.5-turbo-16k");
   const [options, setOptions] = useState<ChatOptions>(chatOpts);
   const [optionsUpdated, setOptionsUpdated] = useState(false);
-
   const [chatLoading, setChatLoading] = useState(false);
-
   const [fullscreen, setFullscreen] = useState(false);
-
   const [layout, setLayout] = useState("chat");
 
+  // Calculate prompt value based on language, context, message, and code
+  const prompt = useMemo(
+    () => formatPrompt(language, context, message, code),
+    [language, context, message, code]
+  );
+
+  // Callbacks & Handlers
   const setSingleOption = useCallback(
     (key: keyof ChatOptions, value: string | number) => {
       setOptions((prev) => ({ ...prev, [key]: value }));
@@ -92,134 +65,140 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const stop = useCallback(() => chat.interruptGenerate(), []);
 
+  /**
+   * Reloads chat configuration and initializes chat.
+   */
   const reload = useCallback(async () => {
     setChatLoading(true);
-    chat.setInitProgressCallback((report: InitProgressReport) => {
-      setLabel(report.text);
-    });
-    const opts = {
-      ...chatOpts,
-      ...options,
-      conv_config: {
-        system,
-      },
-    };
 
-    // This callback allows us to report initialization progress
     try {
       await chat.unload();
       await chat.resetChat();
-      await chat.reload(selectedModel, opts, appConfig);
+      chat.setInitProgressCallback((report: InitProgressReport) => {
+        setLog(
+          report.text.replace(
+            "It can take a while when we first visit this page to populate the cache. Later refreshes will become faster.",
+            ""
+          )
+        );
+      });
+      await chat.reload(
+        model,
+        {
+          ...chatOpts,
+          ...options,
+          conv_config: {
+            system,
+          },
+        },
+        appConfig
+      );
       setOptionsUpdated(false);
       setChatLoading(false);
     } catch (err: unknown) {
       await chat.unload();
-      setLabel("Init error, " + (err?.toString() ?? ""));
+      setLog("Init error, " + (err?.toString() ?? ""));
       setChatLoading(false);
     }
   }, [optionsUpdated]);
 
-  const sendMessage = useCallback(async () => {
-    const localMessages = messages;
-    let message = "";
+  /**
+   * Handles sending messages via OpenAI.
+   */
+  const handleOpenAiMessage = useCallback(async () => {
+    const oldMessages = messages;
+    debugger;
+    const stream = await openai.chat.completions.create({
+      model: model,
+      messages: [
+        { role: "system", content: system },
+        { role: "user", content: prompt },
+      ],
+      stream: true,
+      temperature: options.temperature,
+      top_p: options.top_p,
+      max_tokens: 10000,
+      frequency_penalty: options.repetition_penalty,
+    });
 
-    if (language !== "") {
-      message += `\nProgramming language: ${language};\n`;
+    setChatLoading(false);
+    let response = "";
+    for await (const part of stream) {
+      response += part.choices[0]?.delta?.content || "";
+      setMessages([{ value: response, model: model }, ...oldMessages]);
     }
+  }, [prompt, optionsUpdated]);
 
-    if (context !== "") {
-      message += ` \nTools: ${context};\n`;
-    }
-
-    if (prompt !== "") {
-      message += ` \n Request: ${prompt}; \n`;
-    }
-    if (source !== "") {
-      message += `\n Code: ${source}\n `;
-    }
-
-    if (runtime === "open-ai") {
-      const stream = await openai.chat.completions.create({
-        model: selectedModel,
-        messages: [
-          { role: "system", content: system },
-          { role: "user", content: message },
-        ],
-        stream: true,
-        temperature: options.temperature,
-        top_p: options.top_p,
-        max_tokens: 10000,
-        frequency_penalty: options.repetition_penalty,
-      });
-      let response = "";
-      for await (const part of stream) {
-        response += part.choices[0]?.delta?.content || "";
-        setMessages([...[response], ...localMessages]);
-      }
+  /**
+   * Sends messages using the WebLLM method.
+   */
+  const handleWebLLMMessage = useCallback(async () => {
+    if (!optionsUpdated) {
+      await sendWebLLMMessage();
     } else {
-      if (!optionsUpdated) {
-        await chat.generate(message, (_step, message) => {
-          setMessages([...[message], ...localMessages]);
-        });
-      } else {
-        await reload();
-        await chat.generate(message, (_step, message) => {
-          setMessages([...[message], ...localMessages]);
-        });
-        setLabel(await chat.runtimeStatsText());
-      }
+      await reload();
+      await sendWebLLMMessage();
     }
-  }, [
-    chat,
-    context,
-    language,
-    messages,
-    optionsUpdated,
-    prompt,
-    reload,
-    runtime,
-    selectedModel,
-    source,
-  ]);
+  }, [prompt, optionsUpdated]);
+
+  const sendWebLLMMessage = useCallback(async () => {
+    const oldMessages = messages;
+    await chat.generate(prompt, async (_step, response) => {
+      if (chatLoading) setChatLoading(false);
+      setMessages([{ value: response, model: model }, ...oldMessages]);
+      setLog(await chat.runtimeStatsText());
+    });
+  }, [prompt, optionsUpdated, chatLoading]);
+
+  /**
+   * Determines the source and sends the message accordingly.
+   */
+  const sendMessage = useCallback(async () => {
+    setChatLoading(true);
+    if (source === "open-ai") {
+      await handleOpenAiMessage();
+    } else {
+      await handleWebLLMMessage();
+    }
+    setChatLoading(false);
+  }, [prompt, optionsUpdated]);
 
   const sendCommand = useCallback(
     async (command: string) => {
-      const localMessages = messages;
-
-      await chat.generate(command, (_step, message) => {
-        setMessages([...[message], ...localMessages]);
+      const oldMessages = messages;
+      chat.generate(command, async (_step, response) => {
+        setMessages([{ value: response, model: model }, ...oldMessages]);
+        setLog(await chat.runtimeStatsText());
       });
-
-      setLabel(await chat.runtimeStatsText());
     },
-    [chat, messages]
+    [chat, messages, model]
   );
 
+  // Provider value
   const value = {
     setOptionsUpdated,
-    label,
-    setLabel,
+    log,
+    setLog,
     messages,
     setMessages,
-    prompt,
-    setPrompt,
+    message,
+    setMessage,
     chatLoading,
     setChatLoading,
-    selectedModel,
-    setSelectedModel,
+    model,
+    setModel,
     system,
     setSystem,
     context,
     setContext,
-    runtime,
-    setRuntime,
     source,
-
+    setSource,
+    code,
     language,
     options,
     setSingleOption,
     setLanguage,
-    setSource,
+    setCode,
     reset,
     stop,
     sendMessage,
@@ -229,6 +208,7 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
     layout,
     setLayout,
   };
+
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 

@@ -1,36 +1,22 @@
 import {
-  Alert,
   Box,
   FormControl,
-  Grid,
   InputLabel,
   MenuItem,
   Select,
   TextField,
-  Typography,
 } from "@mui/material";
 import { useContext } from "../hooks";
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
-import Presets from "./presets";
 import { githubDark } from "@uiw/codemirror-theme-github";
-import Commands from "./commands";
-import { codeString } from "../exampleCode";
-import { programmingLanguages } from "../consts";
+import { codeString } from "../constants";
+import { programmingLanguages } from "../constants";
 import Prompt from "./prompt";
 
 const Input = () => {
-  const {
-    setPrompt,
-    sendMessage,
-    prompt,
-    context,
-    setContext,
-    setSource,
-    language,
-    label,
-    setLanguage,
-  } = useContext();
+  const { sendMessage, context, setContext, setCode, language, setLanguage } =
+    useContext();
   return (
     <Box>
       <Box display="flex" gap={2} marginBottom={2}>
@@ -69,7 +55,7 @@ const Input = () => {
       </Box>
       <CodeMirror
         extensions={[javascript({ jsx: true })]}
-        onChange={(value) => setSource(value)}
+        onChange={(value) => setCode(value)}
         theme={githubDark}
         placeholder={codeString}
         maxHeight="60vh"

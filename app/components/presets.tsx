@@ -7,7 +7,7 @@ import HelpIcon from "@mui/icons-material/Help";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
 const Presets = () => {
-  const { setPrompt } = useContext();
+  const { setMessage } = useContext();
 
   return (
     <ButtonGroup size="small">
@@ -15,7 +15,7 @@ const Presets = () => {
         startIcon={<BugReportIcon />}
         color="secondary"
         onClick={() =>
-          setPrompt(
+          setMessage(
             "I have this error when running my  code. Any idea what could be causing it?"
           )
         }
@@ -26,7 +26,7 @@ const Presets = () => {
         startIcon={<LibraryBooksIcon />}
         color="secondary"
         onClick={() =>
-          setPrompt("Can you generate documentation for this code? ")
+          setMessage("Can you generate documentation for this code? ")
         }
       >
         Document
@@ -34,21 +34,21 @@ const Presets = () => {
       <Button
         startIcon={<HelpIcon />}
         color="secondary"
-        onClick={() => setPrompt("Can you explain this code?")}
+        onClick={() => setMessage("Can you explain this code?")}
       >
         Explain
       </Button>
       <Button
         startIcon={<CheckBoxIcon />}
         color="secondary"
-        onClick={() => setPrompt("Can you write a test for this code?")}
+        onClick={() => setMessage("Can you write a test for this code?")}
       >
         Write test
       </Button>
       <Button
         startIcon={<CommentIcon />}
         color="secondary"
-        onClick={() => setPrompt("Can you write a test for this code?")}
+        onClick={() => setMessage("Can you write a test for this code?")}
       >
         Comments
       </Button>

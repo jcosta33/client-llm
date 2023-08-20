@@ -11,11 +11,11 @@ import {
 import { useContext } from "../hooks";
 import ReactMarkdown from "react-markdown";
 import Highlight from "react-highlight";
-import "highlight.js/styles/github-dark.css";
 import CopyIcon from "@mui/icons-material/CopyAll";
+import "highlight.js/styles/github-dark.css";
 
 const Output = () => {
-  const { messages, selectedModel } = useContext();
+  const { messages, model } = useContext();
 
   const handleCopy = (content: string) => {
     navigator.clipboard.writeText(content);
@@ -26,10 +26,56 @@ const Output = () => {
       {messages.map((message, index) => {
         return (
           <Grid item key={index} maxWidth="100%!important">
-            <Card variant="outlined" sx={{ fontSize: 12, background: "#111" }}>
-              <CardContent>
+            <Card
+              variant="outlined"
+              sx={{
+                background: "#0b0b0b",
+                maxHeight: "calc(100vh - 200px)",
+                overflow: "auto",
+                fontSize: 10,
+              }}
+            >
+              <CardContent sx={{ position: "relative", paddingTop: 4 }}>
+                <Typography
+                  sx={{
+                    color: "#999",
+                    position: "absolute",
+                    top: 2,
+                    borderBottom: "1px solid #444",
+                    right: 0,
+                    left: 0,
+                    textAlign: "center",
+                    fontSize: 12,
+                    opacity: 0.4,
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {message.model}
+                </Typography>
                 <ReactMarkdown
                   components={{
+                    p: ({ node, className, children, ...props }) => {
+                      return (
+                        <Typography
+                          variant="body2"
+                          className={className}
+                          {...props}
+                        >
+                          {children}
+                        </Typography>
+                      );
+                    },
+                    h1: ({ node, className, children, ...props }) => {
+                      return (
+                        <Typography
+                          variant="h1"
+                          className={className}
+                          {...props}
+                        >
+                          {children}
+                        </Typography>
+                      );
+                    },
                     code({ node, inline, className, children, ...props }) {
                       // If inline, retain the default behavior
                       if (inline) {
@@ -42,9 +88,7 @@ const Output = () => {
 
                       return (
                         <Box position="relative">
-                          <Highlight>
-                            <div contentEditable>{children}</div>
-                          </Highlight>
+                          <Highlight>{children}</Highlight>
                           <Button
                             onClick={() => handleCopy(String(children))}
                             variant="text"
@@ -64,7 +108,7 @@ const Output = () => {
                     },
                   }}
                 >
-                  {message}
+                  {message.value}
                 </ReactMarkdown>
               </CardContent>
             </Card>
@@ -77,9 +121,9 @@ const Output = () => {
           color={"#444"}
           textAlign={"center"}
           marginBottom={4}
-          marginTop={messages.length === 0 ? 20 : 2}
+          marginTop={messages.length === 0 ? 20 : 10}
         >
-          {selectedModel}
+          {model}
         </Typography>
       </Grid>
     </Grid>
