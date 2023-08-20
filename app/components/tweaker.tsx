@@ -9,6 +9,7 @@ import {
   FormControl,
   MenuItem,
   Select,
+  Typography,
 } from "@mui/material";
 import { useContext } from "../hooks";
 import ResetIcon from "@mui/icons-material/RestartAlt";
@@ -31,6 +32,8 @@ const Tweaker = () => {
 
   return (
     <Box>
+      <Typography variant="h6" textAlign="center">Tweaker</Typography>
+      <br />
       <FormControl variant="outlined" sx={{ width: "100%" }}>
         <InputLabel id="runtime-label"> Runtime</InputLabel>
         <Select
@@ -159,7 +162,6 @@ const Tweaker = () => {
           </FormHelperText>
         </>
       )}
-      <br />
       {/* {source === "web-llm" && (
         <>
           <InputLabel>Shift fill factor</InputLabel>
@@ -179,7 +181,6 @@ const Tweaker = () => {
           </FormHelperText>
         </>
       )} */}
-      <br />
       <Box display="flex" justifyContent="space-between">
         <Button
           variant="text"

@@ -1,4 +1,8 @@
-import { ChatModule, ChatOptions, InitProgressReport } from "@mlc-ai/web-llm";
+import {
+  ChatWorkerClient,
+  ChatOptions,
+  InitProgressReport,
+} from "@mlc-ai/web-llm";
 import React, {
   useState,
   useCallback,
@@ -11,7 +15,9 @@ import { OpenAI } from "openai";
 import { formatPrompt } from "./utils";
 import { ContextType, PromptResponse } from "./types";
 
-const chat = new ChatModule();
+const chat = new ChatWorkerClient(
+  new Worker(new URL("./worker.ts", import.meta.url), { type: "module" })
+);
 
 const openai = new OpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPEN_AI_API_KEY,
@@ -60,6 +66,7 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
     setMessages([]);
     chat.resetChat();
     setOptions(chatOpts);
+    setOptionsUpdated(true);
     reload();
   }, []);
 
@@ -100,14 +107,13 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
       setLog("Init error, " + (err?.toString() ?? ""));
       setChatLoading(false);
     }
-  }, [optionsUpdated]);
+  }, [optionsUpdated, model, options, system]);
 
   /**
    * Handles sending messages via OpenAI.
    */
   const handleOpenAiMessage = useCallback(async () => {
     const oldMessages = messages;
-    debugger;
     const stream = await openai.chat.completions.create({
       model: model,
       messages: [
@@ -143,8 +149,12 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const sendWebLLMMessage = useCallback(async () => {
     const oldMessages = messages;
+    let chatLoadingStopped = false;
     await chat.generate(prompt, async (_step, response) => {
-      if (chatLoading) setChatLoading(false);
+      if (!chatLoadingStopped) {
+        chatLoadingStopped = true;
+        setChatLoading(false);
+      }
       setMessages([{ value: response, model: model }, ...oldMessages]);
       setLog(await chat.runtimeStatsText());
     });
@@ -155,6 +165,7 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
    */
   const sendMessage = useCallback(async () => {
     setChatLoading(true);
+    debugger
     if (source === "open-ai") {
       await handleOpenAiMessage();
     } else {
