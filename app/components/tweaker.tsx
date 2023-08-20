@@ -32,7 +32,7 @@ const Tweaker = () => {
 
   return (
     <Box>
-      <Typography variant="h6" textAlign="center">Tweaker</Typography>
+      <Typography variant="h6">Settings</Typography>
       <br />
       <FormControl variant="outlined" sx={{ width: "100%" }}>
         <InputLabel id="runtime-label"> Runtime</InputLabel>

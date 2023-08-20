@@ -13,9 +13,9 @@ a.active {
 
 ol,
 ul {
-  margin: 16px 16px 0 16px;
+  margin: 8px 16px 0 16px;
   padding-left: 4px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 li {

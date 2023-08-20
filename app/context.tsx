@@ -160,7 +160,7 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
         chatLoadingStopped = true;
         setChatLoading(false);
       }
-      setMessages([{ value: response, model: model }, ...oldMessages]);
+      setMessages([...oldMessages, { value: response, model: model }]);
       setLog(await chat.runtimeStatsText());
     });
   }, [prompt, optionsUpdated, chatLoading]);
@@ -170,7 +170,6 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
    */
   const sendMessage = useCallback(async () => {
     setChatLoading(true);
-    debugger;
     if (source === "open-ai") {
       await handleOpenAiMessage();
     } else {
@@ -181,11 +180,11 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const sendCommand = useCallback(
     async (command: string) => {
-      const oldMessages = messages;
-      chat.generate(command, async (_step, response) => {
-        setMessages([{ value: response, model: model }, ...oldMessages]);
-        setLog(await chat.runtimeStatsText());
-      });
+      // const oldMessages = messages;
+      // chat.generate(command, async (_step, response) => {
+      //   setMessages([{ value: response, model: model }, ...oldMessages]);
+      //   setLog(await chat.runtimeStatsText());
+      // });
     },
     [chat, messages, model]
   );

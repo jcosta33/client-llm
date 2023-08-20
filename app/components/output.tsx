@@ -22,7 +22,25 @@ const Output = () => {
   };
 
   return (
-    <Grid container spacing={2} direction="column">
+    <Grid
+      container
+      spacing={2}
+      direction="column-reverse"
+      height="100%"
+      flexWrap={"nowrap"}
+      overflow="auto"
+    >
+      <Grid item>
+        <Typography
+          variant="h5"
+          color={"#444"}
+          textAlign={"center"}
+          marginBottom={1.5}
+          marginTop={messages.length === 0 ? 20 : 0}
+        >
+          {model}
+        </Typography>
+      </Grid>
       {messages.map((message, index) => {
         return (
           <Grid item key={index} maxWidth="100%!important">
@@ -30,8 +48,6 @@ const Output = () => {
               variant="outlined"
               sx={{
                 background: "#0b0b0b",
-                maxHeight: "calc(100vh - 200px)",
-                overflow: "auto",
                 fontSize: 10,
               }}
             >
@@ -115,17 +131,6 @@ const Output = () => {
           </Grid>
         );
       })}
-      <Grid item>
-        <Typography
-          variant="h4"
-          color={"#444"}
-          textAlign={"center"}
-          marginBottom={4}
-          marginTop={messages.length === 0 ? 20 : 10}
-        >
-          {model}
-        </Typography>
-      </Grid>
     </Grid>
   );
 };

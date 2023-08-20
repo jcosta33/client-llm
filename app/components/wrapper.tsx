@@ -40,7 +40,7 @@ const CodeLayout: FC<CodeLayoutProps> = ({ fullscreen }) => {
         </Grid>
 
         <Grid item sm={6}>
-          <Box maxHeight="90vh" overflow="auto" padding={2}>
+          <Box height="calc(100vh - 70px)" padding={2}>
             <Output />
           </Box>
         </Grid>
@@ -59,12 +59,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ fullscreen }) => {
       <ResponsiveAppBar />
       <Grid container spacing={0} justifyContent={"center"}>
         <Grid item sm={8}>
-          <Box
-            height="calc(100vh - 350px)"
-            overflow="auto"
-            marginBottom={2}
-            marginTop={2}
-          >
+          <Box height="calc(100vh - 350px)" marginBottom={2} marginTop={2}>
             <Output />
           </Box>
           <Prompt />
