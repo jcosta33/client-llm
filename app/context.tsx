@@ -18,7 +18,7 @@ import { ContextType, PromptResponse } from "./types";
 
 let chat: ChatWorkerClient | ChatModule = new ChatModule();
 
-if (window && window.Worker) {
+if (Worker) {
   chat = new ChatWorkerClient(
     new Worker(new URL("./worker.ts", import.meta.url), { type: "module" })
   );
