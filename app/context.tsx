@@ -160,7 +160,7 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
         chatLoadingStopped = true;
         setChatLoading(false);
       }
-      setMessages([...oldMessages, { value: response, model: model }]);
+      setMessages([{ value: response, model: model }, ...oldMessages]);
       setLog(await chat.runtimeStatsText());
     });
   }, [prompt, optionsUpdated, chatLoading]);
@@ -180,7 +180,7 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const sendCommand = useCallback(
     async (command: string) => {
-      // const oldMessages = messages;
+      const oldMessages = messages;
       // chat.generate(command, async (_step, response) => {
       //   setMessages([{ value: response, model: model }, ...oldMessages]);
       //   setLog(await chat.runtimeStatsText());
