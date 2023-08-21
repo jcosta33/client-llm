@@ -41,14 +41,14 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [system, setSystem] = useState(chatOpts.conv_config.system);
   const [log, setLog] = useState("");
   const [messages, setMessages] = useState<PromptResponse[]>([]);
-  const [source, setSource] = useState("open-ai");
+  const [source, setSource] = useState("web-llm");
   const [message, setMessage] = useState("");
   const [code, setCode] = useState("");
   const [context, setContext] = useState("");
   const [language, setLanguage] = useState("");
-  const [model, setModel] = useState("gpt-3.5-turbo-16k");
+  const [model, setModel] = useState("Llama-2-7b-chat-hf-q4f32_1");
   const [options, setOptions] = useState<ChatOptions>(chatOpts);
-  const [optionsUpdated, setOptionsUpdated] = useState(false);
+  const [optionsUpdated, setOptionsUpdated] = useState(true);
   const [chatLoading, setChatLoading] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const [layout, setLayout] = useState("chat");

@@ -35,12 +35,8 @@ export const webLLMModels = [
     name: "Llama-2-13b-chat-hf-q4f16_1",
   },
   {
-    label: "Llama 2 70b f32",
-    name: "Llama-2-70b-chat-hf-q4f16_1",
-  },
-  {
     label: "Llama 2 70b f16",
-    name: "Llama-2-70b-chat-hf-q4f32_1",
+    name: "Llama-2-70b-chat-hf-q4f16_1",
   },
   {
     label: "RedPajama 3B f32",

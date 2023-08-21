@@ -72,8 +72,8 @@ export const chatOpts = {
   repetition_penalty: 1.2,
   top_p: 0.8,
   temperature: 0.5,
-  mean_gen_len: 500,
-//   shift_fill_factor: 0.3,
+  mean_gen_len: 400,
+  //   shift_fill_factor: 0.3,
   conv_config: {
     system: "",
   },

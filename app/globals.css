@@ -28,6 +28,7 @@ p {
 
 code {
   background: #212121;
+  font-size: 12px;
   &:only-child {
     margin: 0;
   }
