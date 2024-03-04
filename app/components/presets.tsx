@@ -1,58 +1,55 @@
-import { ButtonGroup, Button } from "@mui/material";
 import { useContext } from "../hooks";
-import CommentIcon from "@mui/icons-material/Comment";
-import BugReportIcon from "@mui/icons-material/BugReport";
-import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
-import HelpIcon from "@mui/icons-material/Help";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
 const Presets = () => {
   const { setMessage } = useContext();
 
   return (
-    <ButtonGroup size="small">
-      <Button
-        startIcon={<BugReportIcon />}
-        color="secondary"
+    <div className="flex space-x-2">
+      <button
+        className="bg-red-600 text-white px-4 py-2 flex items-center space-x-2 rounded text-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
         onClick={() =>
-          setMessage(
-            "I have this error when running my  code. Any idea what could be causing it?"
-          )
+          setMessage("I have this error when running my code. Any idea what could be causing it?")
         }
       >
-        Debug
-      </Button>
-      <Button
-        startIcon={<LibraryBooksIcon />}
-        color="secondary"
+        <svg /* SVG for BugReportIcon */ className="w-4 h-4" />
+        <span>Debug</span>
+      </button>
+
+      <button
+        className="bg-red-600 text-white px-4 py-2 flex items-center space-x-2 rounded text-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
         onClick={() =>
-          setMessage("Can you generate documentation for this code? ")
+          setMessage("Can you generate documentation for this code?")
         }
       >
-        Document
-      </Button>
-      <Button
-        startIcon={<HelpIcon />}
-        color="secondary"
+        <svg /* SVG for LibraryBooksIcon */ className="w-4 h-4" />
+        <span>Document</span>
+      </button>
+
+      <button
+        className="bg-red-600 text-white px-4 py-2 flex items-center space-x-2 rounded text-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
         onClick={() => setMessage("Can you explain this code?")}
       >
-        Explain
-      </Button>
-      <Button
-        startIcon={<CheckBoxIcon />}
-        color="secondary"
+        <svg /* SVG for HelpIcon */ className="w-4 h-4" />
+        <span>Explain</span>
+      </button>
+
+      <button
+        className="bg-red-600 text-white px-4 py-2 flex items-center space-x-2 rounded text-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
         onClick={() => setMessage("Can you write a test for this code?")}
       >
-        Write test
-      </Button>
-      <Button
-        startIcon={<CommentIcon />}
-        color="secondary"
+        <svg /* SVG for CheckBoxIcon */ className="w-4 h-4" />
+        <span>Write test</span>
+      </button>
+
+      <button
+        className="bg-red-600 text-white px-4 py-2 flex items-center space-x-2 rounded text-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
         onClick={() => setMessage("Can you write a test for this code?")}
       >
-        Comments
-      </Button>
-    </ButtonGroup>
+        <svg /* SVG for CommentIcon */ className="w-4 h-4" />
+        <span>Comments</span>
+      </button>
+    </div>
+
   );
 };
 

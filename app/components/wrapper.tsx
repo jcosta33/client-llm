@@ -5,9 +5,10 @@ import Input from "./input";
 import Output from "./output";
 import { useContext } from "../hooks";
 import Prompt from "./prompt";
-import ResponsiveAppBar from "./appbar";
 import Tweaker from "./tweaker";
 import { isOnPhone } from "./utils";
+import { Context, Provider } from "../context";
+import { chatOpts } from "../configs";
 
 const TweakerSection: FC = () => {
   return (
@@ -24,30 +25,6 @@ const TweakerSection: FC = () => {
   );
 };
 
-interface CodeLayoutProps {
-  fullscreen: boolean;
-}
-
-const CodeLayout: FC<CodeLayoutProps> = ({ fullscreen }) => {
-  return (
-    <Grid item sm={fullscreen ? 12 : 10}>
-      <ResponsiveAppBar />
-      <Grid container spacing={0}>
-        <Grid item sm={6}>
-          <Box height="calc(100vh - 64px)" overflow="auto" padding={2}>
-            <Input />
-          </Box>
-        </Grid>
-
-        <Grid item sm={6}>
-          <Box height="calc(100vh - 70px)" padding={2}>
-            <Output />
-          </Box>
-        </Grid>
-      </Grid>
-    </Grid>
-  );
-};
 
 interface DefaultLayoutProps {
   fullscreen: boolean;
@@ -56,7 +33,6 @@ interface DefaultLayoutProps {
 const DefaultLayout: React.FC<DefaultLayoutProps> = ({ fullscreen }) => {
   return (
     <Grid item sm={fullscreen ? 12 : 10}>
-      <ResponsiveAppBar />
       <Grid container spacing={0} justifyContent={"center"}>
         <Grid item sm={8}>
           <Box height="calc(100vh - 350px)" marginBottom={2} marginTop={2}>
@@ -70,21 +46,51 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ fullscreen }) => {
 };
 
 const Wrapper: FC = () => {
-  const { layout, fullscreen } = useContext();
+  const { fullscreen } = useContext();
   const userIsOnPhone = useMemo(() => isOnPhone(), []);
 
-  const renderLayout = () => {
-    if (layout === "code" && !userIsOnPhone) {
-      return <CodeLayout fullscreen={fullscreen} />;
-    }
-    return <DefaultLayout fullscreen={fullscreen} />;
-  };
 
   return (
-    <Grid container spacing={0}>
-      {!fullscreen && !userIsOnPhone && <TweakerSection />}
-      {renderLayout()}
-    </Grid>
+    <Context.Provider value={{
+      setOptionsUpdated: () => { },
+      log: "",
+      setLog: () => { },
+      progress: "",
+      setProgress: () => { },
+      messages: [],
+      setMessages: () => { },
+      message: "",
+      setMessage: () => { },
+      chatLoading: false,
+      setChatLoading: () => { },
+      model: "Llama-2-7b-chat-hf-q4f32_1",
+      setModel: () => { },
+      system: chatOpts.conv_config.system,
+      setSystem: () => { },
+      context: "",
+      setContext: () => { },
+      source: "web-llm",
+      setSource: () => { },
+      code: "",
+      setCode: () => { },
+      language: "",
+      setLanguage: () => { },
+      options: chatOpts,
+      setSingleOption: () => { },
+      reset: async () => { },
+      stop: () => { },
+      sendMessage: async () => { },
+      sendCommand: async () => { },
+      fullscreen: false,
+      setFullscreen: () => { },
+      layout: "chat",
+      setLayout: () => { },
+    }}>
+      <Grid container spacing={0}>
+        {!fullscreen && !userIsOnPhone && <TweakerSection />}
+        <DefaultLayout fullscreen={fullscreen} />
+      </Grid>
+    </Context.Provider >
   );
 };
 

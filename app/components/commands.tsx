@@ -1,10 +1,8 @@
-import { Button, Box } from "@mui/material";
+"use client";
+
+import { Button } from "@/components/ui/button";
 import { useContext } from "../hooks";
-import StopIcon from "@mui/icons-material/Stop"; // For "Stop Generation"
-import ReplayIcon from "@mui/icons-material/Replay"; // For "Redo"
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline"; // For "Are you sure?"
-import SendIcon from "@mui/icons-material/Send"; // For "Are you sure?"
-import ClearIcon from "@mui/icons-material/Clear"; // For "Are you sure?"
+import { PaperPlaneIcon, StopIcon, ReloadIcon } from '@radix-ui/react-icons';
 
 const Commands = () => {
   const {
@@ -18,54 +16,53 @@ const Commands = () => {
   } = useContext();
 
   return (
-    <Box display="flex" justifyContent="space-between">
-      <Box>
+    <div className="grid grid-cols-6">
+      <div className="grid grid-cols-subgrid gap-1 col-span-3">
         <Button
-          startIcon={<SendIcon />}
           color="success"
           onClick={sendMessage}
           disabled={chatLoading}
         >
+          <PaperPlaneIcon className="h-4 w-4" />
           Send
         </Button>
 
         <Button
           disabled={chatLoading}
-          startIcon={<StopIcon />}
           color="warning"
           onClick={() => stop()}
         >
+          <StopIcon className="h-4 w-4" />
           Stop
         </Button>
         <Button
           disabled={message === ""}
-          startIcon={<ClearIcon />}
           color="primary"
           onClick={() => setMessage("")}
         >
           Clear
         </Button>
-      </Box>
+      </div>
       {messages.length > 0 && (
-        <Box>
+        <div className="">
           <Button
-            startIcon={<ReplayIcon />}
+            size="icon"
             color="info"
             onClick={() => sendCommand("Please redo the previous task.")}
           >
+            <ReloadIcon className="h-4 w-4" />
             Redo
           </Button>
 
           <Button
-            startIcon={<HelpOutlineIcon />}
             color="info"
             onClick={() => sendCommand("Are you sure about that?")}
           >
             Are You Sure?
           </Button>
-        </Box>
+        </div>
       )}
-    </Box>
+    </div>
   );
 };
 

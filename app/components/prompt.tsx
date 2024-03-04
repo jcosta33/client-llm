@@ -1,32 +1,45 @@
-import { Alert, Box, TextField, Typography } from "@mui/material";
 import { useContext } from "../hooks";
 import Presets from "./presets";
 import Commands from "./commands";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { RocketIcon } from "@radix-ui/react-icons";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const Prompt = () => {
-  const { setMessage, message, log } = useContext();
+  const { setMessage, message, progress, log } = useContext();
   return (
-    <Box>
+    <div>
       <Presets />
-      <TextField
-        fullWidth
-        variant="outlined"
+      <Label htmlFor="message">Prompt</Label>
+      <Textarea
         value={message}
-        multiline
         rows={2} // specify the number of rows
         onChange={(e) => setMessage(e.target.value)}
-        label="Prompt"
         placeholder="Tell me a joke"
         style={{ margin: "16px 0 " }}
-        inputProps={{
-          maxLength: 5000, // limiting message length to 1000 characters, can adjust as needed
-        }}
       />
       <Commands />
-      <Alert severity="info" sx={{ mt: 1 }}>
-        <Typography variant="body1">{log || "Ready!"}</Typography>
+
+
+      {log &&
+        (
+          <Alert>
+            <RocketIcon className="h-4 w-4" />
+            <AlertDescription>
+              {log}
+            </AlertDescription>
+          </Alert>
+
+        )
+      }
+      <Alert >
+        <RocketIcon className="h-4 w-4" />
+        <AlertDescription>
+          {progress || "Ready!"}
+        </AlertDescription>
       </Alert>
-    </Box>
+    </div>
   );
 };
 

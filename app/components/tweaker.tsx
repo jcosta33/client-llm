@@ -1,4 +1,3 @@
-"use-client";
 import {
   InputLabel,
   TextField,
@@ -44,7 +43,7 @@ const Tweaker = () => {
             if (e.target.value === "open-ai") {
               setModel("gpt-3.5-turbo-16k");
             } else {
-              setModel("RedPajama-INCITE-Chat-3B-v1-q4f32_0");
+              setModel("Llama-2-7b-chat-hf-q4f32_1");
             }
             setOptionsUpdated(true);
           }}
@@ -96,7 +95,7 @@ const Tweaker = () => {
       <Slider
         size="small"
         value={options.repetition_penalty}
-        onChange={(e, newValue) => {
+        onChange={(_e, newValue) => {
           setSingleOption("repetition_penalty", newValue as number);
           setOptionsUpdated(true);
         }}
@@ -113,7 +112,7 @@ const Tweaker = () => {
       <Slider
         size="small"
         value={options.top_p}
-        onChange={(e, newValue) => {
+        onChange={(_e, newValue) => {
           setSingleOption("top_p", newValue as number);
           setOptionsUpdated(true);
         }}
@@ -130,7 +129,7 @@ const Tweaker = () => {
       <Slider
         size="small"
         value={options.temperature}
-        onChange={(e, newValue) => {
+        onChange={(_e, newValue) => {
           setSingleOption("temperature", newValue as number);
           setOptionsUpdated(true);
         }}
@@ -149,7 +148,7 @@ const Tweaker = () => {
           <Slider
             size="small"
             value={options.mean_gen_len}
-            onChange={(e, newValue) => {
+            onChange={(_e, newValue) => {
               setSingleOption("mean_gen_len", newValue as number);
               setOptionsUpdated(true);
             }}
@@ -168,7 +167,7 @@ const Tweaker = () => {
           <Slider
             size="small"
             value={options.shift_fill_factor}
-            onChange={(e, newValue) => {
+            onChange={(_e, newValue) => {
               setSingleOption("shift_fill_factor", newValue as number);
               setOptionsUpdated(true);
             }}

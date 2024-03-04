@@ -1,8 +1,13 @@
+
 import "./globals.css";
 import type { Metadata } from "next";
-import { Kanit } from "next/font/google";
+import { Inter as FontSans } from "next/font/google"
+import { cn } from "@/lib/utils"
 
-const roboto = Kanit({ weight: "300", subsets: ["latin"] });
+const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+})
 
 export const metadata: Metadata = {
   title: "Client LLM",
@@ -16,7 +21,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={roboto.className}>{children}</body>
+      <body className={cn(
+        "min-h-screen bg-background font-sans antialiased",
+        fontSans.variable
+      )}>{children}</body>
     </html>
   );
 }

@@ -1,5 +1,3 @@
-import { ThemeOptions } from "@mui/material";
-
 export const programmingLanguages = [
   { label: "Python", name: "python" },
   { label: "JavaScript", name: "javascript" },
@@ -23,32 +21,26 @@ export const webLLMModels = [
     name: "Llama-2-7b-chat-hf-q4f32_1",
   },
   {
-    label: "Llama 2 7b f16",
-    name: "Llama-2-7b-chat-hf-q4f16_1",
-  },
-  {
-    label: "Llama 2 13b f32",
-    name: "Llama-2-13b-chat-hf-q4f32_1",
-  },
-  {
-    label: "Llama 2 13b f16",
-    name: "Llama-2-13b-chat-hf-q4f16_1",
-  },
-  {
-    label: "Llama 2 70b f16",
-    name: "Llama-2-70b-chat-hf-q4f16_1",
-  },
-  {
     label: "RedPajama 3B f32",
     name: "RedPajama-INCITE-Chat-3B-v1-q4f32_0",
   },
+
   {
-    label: "RedPajama 3B f16",
-    name: "RedPajama-INCITE-Chat-3B-v1-q4f16_0",
+    label: "TinyLlama 1.1B f32",
+    name: "TinyLlama-1.1B-Chat-v0.4-q4f32_1",
+  },
+
+  // {
+  //   label: "Mistral 7B f32",
+  //   name: "Mistral-7B-Instruct-v0.2-q4f16_1",
+  // },
+  {
+    label: "Phi-2 f32",
+    name: "phi-2-q4f32_1",
   },
   {
-    label: "Vicuna 7B f32",
-    name: "vicuna-v1-7b-q4f32_0",
+    label: "Gemma 2b f32",
+    name: "gemma-2b-it-q4f32_1",
   },
 ];
 

@@ -1,18 +1,10 @@
-"use-client";
 
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Grid,
-  Typography,
-} from "@mui/material";
 import { useContext } from "../hooks";
 import ReactMarkdown from "react-markdown";
 import Highlight from "react-highlight";
-import CopyIcon from "@mui/icons-material/CopyAll";
 import "highlight.js/styles/github-dark.css";
+import { Button } from "@/components/ui/button";
+import { CopyIcon } from "@radix-ui/react-icons";
 
 const Output = () => {
   const { messages, model } = useContext();
@@ -22,116 +14,46 @@ const Output = () => {
   };
 
   return (
-    <Grid
-      container
-      spacing={2}
-      direction="column-reverse"
-      height="100%"
-      flexWrap={"nowrap"}
-      overflow="auto"
-    >
-      <Grid item>
-        <Typography
-          variant="h5"
-          color={"#444"}
-          textAlign={"center"}
-          marginBottom={1.5}
-          marginTop={messages.length === 0 ? 20 : 0}
-        >
+    <section className="flex flex-col-reverse h-full overflow-auto no-wrap">
+      <header className="mb-6">
+        <h5 className={`text-center text-2xl text-gray-800 mb-6 ${messages.length === 0 ? 'mt-80' : 'mt-0'}`}>
           {model}
-        </Typography>
-      </Grid>
-      {messages.map((message, index) => {
-        return (
-          <Grid item key={index} maxWidth="100%!important">
-            <Card
-              variant="outlined"
-              sx={{
-                background: "#0b0b0b",
-                fontSize: 10,
-              }}
-            >
-              <CardContent sx={{ position: "relative", paddingTop: 4 }}>
-                <Typography
-                  sx={{
-                    color: "#999",
-                    position: "absolute",
-                    top: 2,
-                    borderBottom: "1px solid #444",
-                    right: 0,
-                    left: 0,
-                    textAlign: "center",
-                    fontSize: 12,
-                    opacity: 0.4,
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {message.model}
-                </Typography>
-                <ReactMarkdown
-                  components={{
-                    p: ({ node, className, children, ...props }) => {
-                      return (
-                        <Typography
-                          variant="body2"
-                          className={className}
-                          {...props}
-                        >
-                          {children}
-                        </Typography>
-                      );
-                    },
-                    h1: ({ node, className, children, ...props }) => {
-                      return (
-                        <Typography
-                          variant="h1"
-                          className={className}
-                          {...props}
-                        >
-                          {children}
-                        </Typography>
-                      );
-                    },
-                    code({ node, inline, className, children, ...props }) {
-                      // If inline, retain the default behavior
-                      if (inline) {
-                        return (
-                          <code className={className} {...props}>
-                            {children}
-                          </code>
-                        );
-                      }
-
-                      return (
-                        <Box position="relative">
-                          <Highlight>{children}</Highlight>
-                          <Button
-                            onClick={() => handleCopy(String(children))}
-                            variant="text"
-                            size="small"
-                            sx={{
-                              position: "absolute",
-                              top: 5,
-                              right: 5,
-                              minWidth: 0,
-                              color: "#999",
-                            }}
-                          >
-                            <CopyIcon />
-                          </Button>
-                        </Box>
-                      );
-                    },
-                  }}
-                >
-                  {message.value}
-                </ReactMarkdown>
-              </CardContent>
-            </Card>
-          </Grid>
-        );
-      })}
-    </Grid>
+        </h5>
+      </header>
+      {messages.map((message, index) => (
+        <article key={index} className="max-w-full">
+          <div className="border border-gray-300 bg-gray-900 text-sm p-4">
+            <header className="absolute top-2 right-0 left-0 text-center text-gray-600 border-b border-gray-800 text-xs uppercase opacity-40">
+              {message.model}
+            </header>
+            <div className="relative pt-4">
+              <ReactMarkdown className="text-gray-400" components={{
+                p: ({ node, ...props }) => <p className="mb-2 text-base text-gray-300" {...props} />,
+                h1: ({ node, ...props }) => <h1 className="text-3xl font-bold text-white mb-4" {...props} />,
+                h2: ({ node, ...props }) => <h2 className="text-2xl font-bold text-white mb-4" {...props} />,
+                h3: ({ node, ...props }) => <h3 className="text-xl font-bold text-white mb-3" {...props} />,
+                h4: ({ node, ...props }) => <h4 className="text-lg font-bold text-white mb-3" {...props} />,
+                h5: ({ node, ...props }) => <h5 className="text-md font-bold text-white mb-2" {...props} />,
+                h6: ({ node, ...props }) => <h6 className="text-sm font-bold text-white mb-2" {...props} />,
+                code: ({ node, inline, className, children, ...props }) => inline ? (
+                  <code className="bg-gray-700 text-yellow-300 px-1 py-0.5 rounded" {...props} />
+                ) : (<>
+                  <Highlight>{children}</Highlight>
+                  <Button
+                    size="icon"
+                    onClick={() => handleCopy(String(children))}
+                  >
+                    <CopyIcon />
+                  </Button>
+                </>)
+              }}>
+                {message.value}
+              </ReactMarkdown>
+            </div>
+          </div>
+        </article>
+      ))}
+    </section>
   );
 };
 

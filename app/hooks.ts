@@ -1,3 +1,5 @@
+"use client";
+
 import { useContext as useContextReact } from "react";
 import { Context } from "./context";
 
