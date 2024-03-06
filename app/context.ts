@@ -6,16 +6,13 @@ import {
   ChatOptions,
   InitProgressReport,
 } from "@mlc-ai/web-llm";
-import React, {
+import {
   useState,
   useCallback,
   createContext,
-  ReactNode,
-  useMemo,
 } from "react";
 import { chatOpts, appConfig } from "./configs";
 import { OpenAI } from "openai";
-import { formatPrompt } from "./utils";
 import { ContextType, PromptResponse } from "./types";
 
 let chat: ChatWorkerClient | ChatModule = new ChatModule();
@@ -29,15 +26,12 @@ const openai = new OpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPEN_AI_API_KEY,
   dangerouslyAllowBrowser: true,
 });
-
-const Context = createContext<ContextType | undefined>(undefined);
-
 /**
  * Provider Component to manage and share chat states.
  * @param {ReactNode} children - Children components wrapped by this Provider.
  * @returns {JSX.Element} Provider component.
  */
-const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
+const useInitContext = () => {
   // State definitions
   const [system, setSystem] = useState(chatOpts.conv_config.system);
   const [log, setLog] = useState("");
@@ -45,21 +39,10 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [messages, setMessages] = useState<PromptResponse[]>([]);
   const [source, setSource] = useState("web-llm");
   const [message, setMessage] = useState("");
-  const [code, setCode] = useState("");
-  const [context, setContext] = useState("");
-  const [language, setLanguage] = useState("");
   const [model, setModel] = useState("Llama-2-7b-chat-hf-q4f32_1");
   const [options, setOptions] = useState<ChatOptions>(chatOpts);
   const [optionsUpdated, setOptionsUpdated] = useState(true);
   const [chatLoading, setChatLoading] = useState(false);
-  const [fullscreen, setFullscreen] = useState(false);
-  const [layout, setLayout] = useState("chat");
-
-  // Calculate prompt value based on language, context, message, and code
-  const prompt = useMemo(
-    () => formatPrompt(language, context, message, code),
-    [language, context, message, code]
-  );
 
   // Callbacks & Handlers
   const setSingleOption = useCallback(
@@ -120,7 +103,7 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
       model: model,
       messages: [
         { role: "system", content: system },
-        { role: "user", content: prompt },
+        { role: "user", content: message },
       ],
       stream: true,
       temperature: options.temperature,
@@ -135,20 +118,12 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
       response += part.choices[0]?.delta?.content || "";
       setMessages([{ value: response, model: model }, ...oldMessages]);
     }
-  }, [
-    messages,
-    model,
-    system,
-    prompt,
-    options.temperature,
-    options.top_p,
-    options.repetition_penalty,
-  ]);
+  }, [messages, model, system, message, options.temperature, options.top_p, options.repetition_penalty]);
 
   const sendWebLLMMessage = useCallback(async () => {
     const oldMessages = messages;
     let chatLoadingStopped = false;
-    await chat.generate(prompt, async (_step, response) => {
+    await chat.generate(message, async (_step, response) => {
       if (!chatLoadingStopped && response !== "") {
         chatLoadingStopped = true;
         setChatLoading(false);
@@ -156,7 +131,7 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
       setMessages([{ value: response, model: model }, ...oldMessages]);
       setLog(await chat.runtimeStatsText());
     });
-  }, [messages, prompt, model]);
+  }, [messages, message, model]);
 
   /**
    * Sends messages using the WebLLM method.
@@ -174,6 +149,7 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
    * Determines the source and sends the message accordingly.
    */
   const sendMessage = useCallback(async () => {
+    debugger
     setChatLoading(true);
     if (source === "open-ai") {
       await handleOpenAiMessage();
@@ -183,19 +159,9 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
     setChatLoading(false);
   }, [source, handleOpenAiMessage, handleWebLLMMessage]);
 
-  const sendCommand = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    async (_command: string) => {
-      // chat.generate(command, async (_step, response) => {
-      //   setMessages([{ value: response, model: model }, ...oldMessages]);
-      //   setLog(await chat.runtimeStatsText());
-      // });
-    },
-    []
-  );
 
   // Provider value
-  const value = {
+  return {
     setOptionsUpdated,
     log,
     setLog,
@@ -211,27 +177,17 @@ const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
     setModel,
     system,
     setSystem,
-    context,
-    setContext,
     source,
     setSource,
-    code,
-    language,
     options,
     setSingleOption,
-    setLanguage,
-    setCode,
     reset,
     stop,
     sendMessage,
-    sendCommand,
-    fullscreen,
-    setFullscreen,
-    layout,
-    setLayout,
   };
-
-  return <Context.Provider value={value}>{children}</Context.Provider>;
 };
+const Context = createContext<ContextType>({} as ContextType);
 
-export { Context, Provider };
+
+
+export { Context, useInitContext };

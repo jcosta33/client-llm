@@ -1,7 +1,8 @@
-import { useContext } from "../hooks";
+import { useContext } from "react";
+import { Context } from "../context";
 
 const Presets = () => {
-  const { setMessage } = useContext();
+  const { setMessage, } = useContext(Context);
 
   return (
     <div className="flex space-x-2">

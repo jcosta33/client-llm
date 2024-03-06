@@ -1,25 +1,24 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useContext } from "../hooks";
 import { PaperPlaneIcon, StopIcon, ReloadIcon } from '@radix-ui/react-icons';
+import { useContext } from "react";
+import { Context } from "../context";
 
 const Commands = () => {
   const {
     messages,
     chatLoading,
-    sendCommand,
     setMessage,
     message,
     stop,
     sendMessage,
-  } = useContext();
+  } = useContext(Context);
 
   return (
     <div className="grid grid-cols-6">
       <div className="grid grid-cols-subgrid gap-1 col-span-3">
         <Button
-          color="success"
           onClick={sendMessage}
           disabled={chatLoading}
         >
@@ -29,7 +28,7 @@ const Commands = () => {
 
         <Button
           disabled={chatLoading}
-          color="warning"
+          variant="destructive"
           onClick={() => stop()}
         >
           <StopIcon className="h-4 w-4" />
@@ -37,7 +36,7 @@ const Commands = () => {
         </Button>
         <Button
           disabled={message === ""}
-          color="primary"
+          variant="ghost"
           onClick={() => setMessage("")}
         >
           Clear
@@ -48,7 +47,7 @@ const Commands = () => {
           <Button
             size="icon"
             color="info"
-            onClick={() => sendCommand("Please redo the previous task.")}
+            onClick={() => sendMessage()}
           >
             <ReloadIcon className="h-4 w-4" />
             Redo
@@ -56,7 +55,7 @@ const Commands = () => {
 
           <Button
             color="info"
-            onClick={() => sendCommand("Are you sure about that?")}
+            onClick={() => sendMessage()}
           >
             Are You Sure?
           </Button>

@@ -1,9 +1,10 @@
 "use client";
 import { LinearProgress } from "@mui/material";
-import { useContext } from "../hooks";
+import { Context } from "../context";
+import { useContext } from "react";
 
 const Loader = () => {
-  const { chatLoading } = useContext();
+  const { chatLoading } = useContext(Context);
 
   return (
     <LinearProgress
