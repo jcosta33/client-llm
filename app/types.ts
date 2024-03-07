@@ -1,7 +1,7 @@
 import { ChatOptions } from "@mlc-ai/web-llm";
 import { Dispatch, SetStateAction } from "react";
 
-export interface PromptResponse {
+export interface Message {
   value: string;
   model: string;
 }

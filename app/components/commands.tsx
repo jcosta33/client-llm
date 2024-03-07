@@ -7,7 +7,6 @@ import { Context } from "../context";
 
 const Commands = () => {
   const {
-    messages,
     chatLoading,
     setMessage,
     message,
@@ -16,24 +15,18 @@ const Commands = () => {
   } = useContext(Context);
 
   return (
-    <div className="grid grid-cols-6">
-      <div className="grid grid-cols-subgrid gap-1 col-span-3">
+    <div className="grid grid-cols-12 mb-4">
+      <div className="grid grid-cols-subgrid col-span-12 relative">
         <Button
           onClick={sendMessage}
           disabled={chatLoading}
+          variant="outline"
         >
-          <PaperPlaneIcon className="h-4 w-4" />
+          <PaperPlaneIcon className="h-4 w-4 mr-1" />
           Send
         </Button>
 
-        <Button
-          disabled={chatLoading}
-          variant="destructive"
-          onClick={() => stop()}
-        >
-          <StopIcon className="h-4 w-4" />
-          Stop
-        </Button>
+
         <Button
           disabled={message === ""}
           variant="ghost"
@@ -41,26 +34,16 @@ const Commands = () => {
         >
           Clear
         </Button>
+        <Button
+          disabled={chatLoading}
+          variant="outline"
+          className="min-w-0 text-red-400 hover:text-red-500 absolute right-0"
+          onClick={() => stop()}
+        >
+          <StopIcon className="h-4 w-4" />
+        </Button>
       </div>
-      {messages.length > 0 && (
-        <div className="">
-          <Button
-            size="icon"
-            color="info"
-            onClick={() => sendMessage()}
-          >
-            <ReloadIcon className="h-4 w-4" />
-            Redo
-          </Button>
 
-          <Button
-            color="info"
-            onClick={() => sendMessage()}
-          >
-            Are You Sure?
-          </Button>
-        </div>
-      )}
     </div>
   );
 };

@@ -10,15 +10,16 @@ import { Context } from "../context";
 const Prompt = () => {
   const { setMessage, message, progress, log } = useContext(Context);
   return (
-    <div>
+    <div className="p-4">
       <Presets />
       <Textarea
-        rows={2} // specify the number of rows
+        className="mt-4 mb-4"
+        defaultValue={message}
+        rows={3}
         onChange={(e) =>
           setMessage(e.target.value)
         }
         placeholder="Tell me a joke"
-        style={{ margin: "16px 0 " }}
       />
       <Commands />
 
@@ -33,7 +34,7 @@ const Prompt = () => {
 
         )
       }
-      <Alert className="mt-4">
+      <Alert className="mt-2">
         <RocketIcon />
         <AlertDescription>
           {progress || "Ready!"}

@@ -13,7 +13,7 @@ import {
 } from "react";
 import { chatOpts, appConfig } from "./configs";
 import { OpenAI } from "openai";
-import { ContextType, PromptResponse } from "./types";
+import { ContextType, Message } from "./types";
 
 let chat: ChatWorkerClient | ChatModule = new ChatModule();
 
@@ -36,7 +36,7 @@ const useInitContext = () => {
   const [system, setSystem] = useState(chatOpts.conv_config.system);
   const [log, setLog] = useState("");
   const [progress, setProgress] = useState("");
-  const [messages, setMessages] = useState<PromptResponse[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [source, setSource] = useState("web-llm");
   const [message, setMessage] = useState("");
   const [model, setModel] = useState("Llama-2-7b-chat-hf-q4f32_1");
@@ -98,7 +98,6 @@ const useInitContext = () => {
    * Handles sending messages via OpenAI.
    */
   const handleOpenAiMessage = useCallback(async () => {
-    const oldMessages = messages;
     const stream = await openai.chat.completions.create({
       model: model,
       messages: [
@@ -116,22 +115,28 @@ const useInitContext = () => {
     let response = "";
     for await (const part of stream) {
       response += part.choices[0]?.delta?.content || "";
-      setMessages([{ value: response, model: model }, ...oldMessages]);
+      setMessages([{ value: response, model: model }, ...messages]);
     }
   }, [messages, model, system, message, options.temperature, options.top_p, options.repetition_penalty]);
 
   const sendWebLLMMessage = useCallback(async () => {
-    const oldMessages = messages;
     let chatLoadingStopped = false;
+    let messagePushed = false;
     await chat.generate(message, async (_step, response) => {
       if (!chatLoadingStopped && response !== "") {
         chatLoadingStopped = true;
         setChatLoading(false);
       }
-      setMessages([{ value: response, model: model }, ...oldMessages]);
+      // setMessages([{ value: response, model: model }, ...messages]);
+      if (messagePushed) {
+        setMessages((prev) => prev.map((msg, index) => index === 0 ? { value: response, model: model } : msg));
+      } else {
+        setMessages((prev) => [{ value: response, model: model }, ...prev]);
+        messagePushed = true;
+      }
       setLog(await chat.runtimeStatsText());
     });
-  }, [messages, message, model]);
+  }, [message, model]);
 
   /**
    * Sends messages using the WebLLM method.
@@ -149,15 +154,16 @@ const useInitContext = () => {
    * Determines the source and sends the message accordingly.
    */
   const sendMessage = useCallback(async () => {
-    debugger
     setChatLoading(true);
+    setMessages([{ value: message, model: "user" }, ...messages]);
+    setMessage("");
     if (source === "open-ai") {
       await handleOpenAiMessage();
     } else {
       await handleWebLLMMessage();
     }
     setChatLoading(false);
-  }, [source, handleOpenAiMessage, handleWebLLMMessage]);
+  }, [message, messages, source, handleOpenAiMessage, handleWebLLMMessage]);
 
 
   // Provider value

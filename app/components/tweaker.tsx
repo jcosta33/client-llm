@@ -91,8 +91,6 @@ const Tweaker = () => {
                     </SelectItem>
                   )
                 )}
-                <SelectItem value="web-llm">WebLLM</SelectItem>
-                <SelectItem value="open-ai">OpenAI</SelectItem>
               </SelectContent>
 
             </Select>
@@ -205,16 +203,10 @@ const Tweaker = () => {
               </>
             )}
           </FormItem>
-
-          <Button
-            disabled={chatLoading}
-            type="submit"
-          >
-            Apply
-          </Button>
           <Button
             disabled={chatLoading}
             onClick={reset}
+            variant="outline"
           >
             Reset
           </Button>
