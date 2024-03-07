@@ -182,10 +182,7 @@ const Tweaker = () => {
                 <FormDescription>
                   Desired average length of the generated output.
                 </FormDescription>
-              </>
-            )}
-            {source === "web-llm" && (
-              <>
+
                 <FormLabel>Shift fill factor</FormLabel>
                 <Slider
                   defaultValue={[options.shift_fill_factor]}
@@ -202,6 +199,22 @@ const Tweaker = () => {
                 </FormDescription>
               </>
             )}
+            <>
+              <FormLabel>Frequency penalty</FormLabel>
+              <Slider
+                defaultValue={[options.frequency_penalty]}
+                onChange={(newValue) => {
+                  setSingleOption("frequency_penalty", newValue as any);
+                  setOptionsUpdated(true);
+                }}
+                min={0}
+                max={2}
+                step={0.02}
+              />
+              <FormDescription >
+                Determines the model&apos;s tendency to stick to or shift topics.
+              </FormDescription>
+            </>
           </FormItem>
           <Button
             disabled={chatLoading}
@@ -212,7 +225,7 @@ const Tweaker = () => {
           </Button>
         </form>
       </Form>
-    </div>
+    </div >
   );
 };
 

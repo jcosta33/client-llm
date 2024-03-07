@@ -1,5 +1,6 @@
 import { ChatOptions } from "@mlc-ai/web-llm";
 import { Dispatch, SetStateAction } from "react";
+import { chatOpts } from "./configs";
 
 export interface Message {
   value: string;
@@ -24,7 +25,7 @@ export interface ContextType {
   system: string;
   setSource: Dispatch<SetStateAction<string>>;
   source: string;
-  options: ChatOptions;
+  options: typeof chatOpts;
   setSingleOption: (key: keyof ChatOptions, value: string | number) => void;
   reset: () => void;
   stop: () => void;

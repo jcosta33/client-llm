@@ -33,14 +33,14 @@ const openai = new OpenAI({
  */
 const useInitContext = () => {
   // State definitions
-  const [system, setSystem] = useState(chatOpts.conv_config.system);
+  const [system, setSystem] = useState(chatOpts.conv_config?.system || "");
   const [log, setLog] = useState("");
   const [progress, setProgress] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [source, setSource] = useState("web-llm");
   const [message, setMessage] = useState("");
   const [model, setModel] = useState("Llama-2-7b-chat-hf-q4f32_1");
-  const [options, setOptions] = useState<ChatOptions>(chatOpts);
+  const [options, setOptions] = useState(chatOpts);
   const [optionsUpdated, setOptionsUpdated] = useState(true);
   const [chatLoading, setChatLoading] = useState(false);
 
@@ -73,7 +73,7 @@ const useInitContext = () => {
       await chat.reload(
         model,
         {
-          ...chatOpts,
+          ...chatOpts as ChatOptions,
           ...options,
         },
         appConfig
@@ -101,14 +101,14 @@ const useInitContext = () => {
     const stream = await openai.chat.completions.create({
       model: model,
       messages: [
-        { role: "system", content: system },
+        { role: "system", content: system || "" },
         { role: "user", content: message },
       ],
       stream: true,
       temperature: options.temperature,
       top_p: options.top_p,
       max_tokens: 10000,
-      frequency_penalty: options.repetition_penalty,
+      frequency_penalty: options.frequency_penalty,
     });
 
     setChatLoading(false);

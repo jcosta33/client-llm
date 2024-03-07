@@ -1,4 +1,4 @@
-import { AppConfig } from "@mlc-ai/web-llm";
+import { AppConfig, ChatOptions } from "@mlc-ai/web-llm";
 
 export const appConfig: AppConfig = {
   model_list: [
@@ -61,12 +61,13 @@ export const appConfig: AppConfig = {
 
 // override default
 // see https://mlc.ai/mlc-llm/docs/get_started/mlc_chat_config.html
-export const chatOpts: ChatOptions = {
+export const chatOpts = {
   repetition_penalty: 1.2,
   top_p: 0.8,
   temperature: 0.5,
   mean_gen_len: 400,
-  //   shift_fill_factor: 0.3,
+  frequency_penalty: 0.5,
+  shift_fill_factor: 0.3,
   conv_config: {
     system: "",
   },
